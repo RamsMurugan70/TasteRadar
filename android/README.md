@@ -23,6 +23,24 @@ its name, score and reason are already on the device, so an alert fires in a
 basement with no signal. The server is told about it afterwards, and if that
 fails the alert still happened.
 
+Feedback works the same way. Tapping Going, Not now or Wrong writes to
+`FeedbackQueue` synchronously and returns — no network on the tap path at all.
+`FeedbackWorker` delivers it when there is a connection, with WorkManager doing
+the waiting, the exponential backoff and the surviving of reboots. A tap in a
+basement is recorded exactly like a tap on wifi, which matters because feedback
+from a basement is feedback about an alert the local path was built for.
+
+Three details that make the queue safe rather than merely present:
+
+- **Retrying is only safe because the server is idempotent.** Re-delivering the
+  same Wrong leaves one correction, not three — enforced by a unique index on
+  `corrections`, not by hoping.
+- **A 4xx is dropped, not retried.** A deleted want or an alert the server has no
+  record of will never succeed, and a queue that retries it forever is a battery
+  bug. Anything else — no signal, a 5xx, the server being off — is retried.
+- **One pending item per place and want, newest wins.** Tapping Not now and then
+  Wrong sends Wrong, not both in whatever order they happen to drain.
+
 ENTER tries first and DWELL tries again. That second attempt is what rescues the
 case where you drove past, the speed gate suppressed it, and then you parked.
 
@@ -73,9 +91,6 @@ be standing in Nungambakkam, so expect zero fences unless you are — point
 - **Hours are local wall clock.** For a Chennai-only app that is unambiguous.
   Travel across a timezone and the gate reads the wrong hours; fixing it means
   storing an IANA zone per place and comparing in that zone.
-- **Feedback is not queued.** If a *Going* tap happens with no signal it is
-  logged and dropped. A retry queue is worth building once the app is in daily
-  use and the loss is measurable, not before.
 - **No authentication anywhere.** The server trusts whoever can reach it, and the
   app sends no credential. Keep it on your own network.
 - **Cleartext HTTP is permitted for private address ranges only**, via

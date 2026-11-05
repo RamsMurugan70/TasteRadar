@@ -78,8 +78,10 @@ export function alertRoutes(app: FastifyInstance, db: Db): void {
       db.prepare('UPDATE alerts SET action = ? WHERE id = ?').run(action, request.params.id);
 
       if (action === 'wrong') {
+        // OR IGNORE, because the phone retries feedback that failed to send and
+        // the same Wrong may legitimately arrive twice.
         db.prepare(
-          `INSERT INTO corrections (id, user_id, want_id, place_id, created_at)
+          `INSERT OR IGNORE INTO corrections (id, user_id, want_id, place_id, created_at)
            VALUES (?, ?, ?, ?, ?)`,
         ).run(randomUUID(), config.defaultUserId, alert.want_id, alert.place_id, nowIso());
         db.prepare(

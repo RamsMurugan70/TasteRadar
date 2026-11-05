@@ -106,4 +106,15 @@ CREATE TABLE IF NOT EXISTS corrections (
   note       TEXT NOT NULL DEFAULT '',
   created_at TEXT NOT NULL
 );
+
+-- The phone retries feedback it could not deliver, so the same "Wrong" can
+-- arrive more than once. Without this, each retry would add another negative
+-- example and quietly skew the extraction prompt. Dedupe first so the index can
+-- be created on a database written before it existed.
+DELETE FROM corrections
+ WHERE rowid NOT IN (
+   SELECT MIN(rowid) FROM corrections GROUP BY user_id, want_id, place_id
+ );
+CREATE UNIQUE INDEX IF NOT EXISTS corrections_unique
+  ON corrections(user_id, want_id, place_id);
 `;

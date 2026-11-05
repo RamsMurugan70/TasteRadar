@@ -88,6 +88,8 @@ class MainActivity : Activity() {
         super.onResume()
         refreshStatus()
         loadWants()
+        // Opening the app is a good moment to try the queue again.
+        if (FeedbackQueue.size(this) > 0) FeedbackWorker.schedule(this)
     }
 
     // ---- views ----
@@ -134,6 +136,10 @@ class MainActivity : Activity() {
             append(if (savedAt == 0L) "never" else android.text.format.DateUtils.getRelativeTimeSpanString(savedAt))
             append('\n')
             append("Alerts in the last 2 days: ").append(alertsToday).append('\n')
+            val queued = FeedbackQueue.size(this@MainActivity)
+            if (queued > 0) {
+                append("Feedback waiting to send: ").append(queued).append('\n')
+            }
             if (fences.isNotEmpty()) {
                 append('\n')
                 fences.take(5).forEach { append("  ").append(it.score).append("  ").append(it.name).append('\n') }

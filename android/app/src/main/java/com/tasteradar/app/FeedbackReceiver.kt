@@ -3,11 +3,14 @@ package com.tasteradar.app
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import kotlin.concurrent.thread
 
 /**
  * Going / Not now / Wrong, tapped on the notification.
+ *
+ * This does no network at all. It writes the tap to the queue, dismisses the
+ * notification and asks WorkManager to deliver it when there is a connection.
+ * A tap in a basement is recorded exactly like a tap on wifi, which matters
+ * because an alert that fired in a basement is one the local path was built for.
  *
  * Wrong is the valuable one: the server drops that place's score to zero for
  * good and keeps it as a negative example for later extraction.
@@ -21,28 +24,7 @@ class FeedbackReceiver : BroadcastReceiver() {
         val action = intent.getStringExtra("feedback") ?: return
 
         Notifier.cancel(context, placeId)
-
-        val pending = goAsync()
-        thread {
-            try {
-                // The alert may not have reached the server yet - no signal at the
-                // time, or the report is still in flight. Create it now if so.
-                val alertId = FenceCache.alertId(context, placeId) ?: run {
-                    val fence = FenceCache.fenceById(context, placeId)
-                        ?: Fence(placeId, wantId, "", 0.0, 0.0, 0, "", false, null)
-                    Api.postAlert(context, fence, null, null)
-                        .also { FenceCache.putAlertId(context, placeId, it) }
-                }
-                Api.feedback(context, alertId, action)
-                Log.i("FeedbackReceiver", "$action recorded for $placeId")
-            } catch (e: Exception) {
-                // Dropped on the floor on purpose. A retry queue is worth building
-                // once the app is in daily use and the loss is measurable; until
-                // then it is speculative complexity.
-                Log.w("FeedbackReceiver", "feedback lost: ${e.message}")
-            } finally {
-                pending.finish()
-            }
-        }
+        FeedbackQueue.enqueue(context, placeId, wantId, action)
+        FeedbackWorker.schedule(context)
     }
 }

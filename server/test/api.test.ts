@@ -158,6 +158,32 @@ test('"wrong" zeroes the score and records a correction for good', async () => {
   assert.ok(!ids.includes('p-mid'), 'a place marked wrong must never return');
 });
 
+test('the same feedback twice leaves one correction', async () => {
+  // The phone retries what it could not deliver, so this has to be safe.
+  seedPlace({ id: 'p-retry', name: 'Retry Mess', lat: 13.0605, lng: 80.2497 });
+  score('p-retry', 90);
+  const created = await app.inject({
+    method: 'POST',
+    url: '/alerts',
+    payload: { placeId: 'p-retry', wantId },
+  });
+  const alertId = created.json().alertId as string;
+
+  for (let i = 0; i < 3; i++) {
+    const res = await app.inject({
+      method: 'POST',
+      url: `/alerts/${alertId}/feedback`,
+      payload: { action: 'wrong' },
+    });
+    assert.equal(res.statusCode, 200, 'a retry must not error');
+  }
+
+  const n = db
+    .prepare('SELECT COUNT(*) AS n FROM corrections WHERE place_id = ?')
+    .get('p-retry') as unknown as { n: number };
+  assert.equal(n.n, 1, 'three deliveries of the same Wrong must leave one correction');
+});
+
 test('feedback on an unknown alert is refused', async () => {
   const res = await app.inject({
     method: 'POST',

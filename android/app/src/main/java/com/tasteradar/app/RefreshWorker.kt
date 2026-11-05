@@ -22,6 +22,11 @@ class RefreshWorker(context: Context, params: WorkerParameters) : Worker(context
 
     override fun doWork(): Result {
         val context = applicationContext
+
+        // Belt and braces: FeedbackWorker is the primary route, but if its
+        // backoff has given up this catches whatever is left.
+        FeedbackQueue.flush(context)
+
         if (!Fences.hasLocationPermission(context)) return Result.success()
 
         Fences.reregisterFromCache(context)

@@ -35,7 +35,14 @@ object Api {
 
     private const val TIMEOUT_MS = 15_000
 
-    class ApiException(message: String) : Exception(message)
+    /**
+     * `status` is the HTTP code, or 0 when the request never reached the server.
+     * The retry queue needs that difference: a 404 will never succeed however
+     * many times it is tried, a connection failure very likely will.
+     */
+    class ApiException(message: String, val status: Int = 0) : Exception(message) {
+        val isPermanent: Boolean get() = status in 400..499
+    }
 
     private fun request(
         context: Context,
@@ -61,7 +68,9 @@ object Api {
             val code = conn.responseCode
             val stream = if (code in 200..299) conn.inputStream else conn.errorStream
             val text = stream?.bufferedReader()?.use(BufferedReader::readText).orEmpty()
-            if (code !in 200..299) throw ApiException("HTTP $code from $path: ${text.take(200)}")
+            if (code !in 200..299) {
+                throw ApiException("HTTP $code from $path: ${text.take(200)}", code)
+            }
             return text
         } finally {
             conn.disconnect()

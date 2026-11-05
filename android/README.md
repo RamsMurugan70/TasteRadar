@@ -4,12 +4,17 @@ The thing you carry. It holds one umbrella fence and up to fifteen place fences,
 asks the server for a new set whenever you leave the umbrella, and decides
 locally whether a crossing is worth interrupting you for.
 
-**Not compiled.** There was no Android SDK where this was written, so the first
-build is part of the job. The code is deliberately conservative to make that
-first build likely: two dependencies, no Compose, no XML layouts, no annotation
-processors. What *was* checked is that delimiters balance and that every
-cross-object call resolves to a real declaration — which catches typos, not
-type errors.
+**Compiles clean; has never run.** `./gradlew assembleDebug` succeeded on the
+first attempt on 5 November 2026 — 35 tasks, no errors, a debug APK produced —
+against AGP 8.5.2, Gradle 8.9 and SDK 35 on Android Studio 2025.2.
+
+That is worth exactly what it is worth. The compiler has confirmed the types
+line up; it has said nothing about whether a geofence fires, whether the
+suppression gates behave on a real street, or whether the thing is any use. The
+code was written without a compiler and kept deliberately conservative to make
+that first build likely — two dependencies, no Compose, no XML layouts, no
+annotation processors — and that bet paid off. The harder questions are still
+open.
 
 ## How a crossing becomes an alert
 

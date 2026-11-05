@@ -19,9 +19,8 @@ want, and then it interrupts you.
 ## Status
 
 The **server and its workers run today** — seed it, score it, and `POST /fence-set` returns
-scored matches with reasons, verified against a live server. The **app is written but has never
-been compiled**: there was no Android SDK where it was built, so treat the first build as part
-of the work.
+scored matches with reasons, verified against a live server. The **app compiles and packages
+into an APK**, clean on the first attempt, though it has not yet been run on a phone.
 
 Two experiments still gate whether any of it is worth finishing, and either can say no.
 

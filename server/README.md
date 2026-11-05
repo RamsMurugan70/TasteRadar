@@ -99,5 +99,14 @@ dependency that many managed Postgres offerings make awkward.
 - Authentication is one shared bearer token, which is the right size for one
   user and no accounts. With no token set the server binds to loopback only, so
   the open configuration cannot be reached from the network by accident.
-- There is no rate limiting on token attempts. Behind a tunnel on a home network
-  that is proportionate; it would not be if this were public.
+- **Ten failed attempts from one client in five minutes locks it out for five
+  minutes**, and a locked client is refused before the token is even compared.
+  A correct token clears the count, so mistyping it in the app does not then
+  lock you out. The lockout holds against the correct token too — otherwise an
+  attacker who eventually guesses is rewarded for persistence, which is the
+  thing the limit exists to stop.
+- **Set `TRUST_PROXY=true` only behind a proxy you control.** Through a tunnel
+  every request arrives from one address, so without it one attacker's failures
+  would lock you out alongside them. With it, the address comes from
+  `X-Forwarded-For` — which anyone can forge if the server is directly
+  reachable, so it is off by default.

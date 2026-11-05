@@ -91,6 +91,10 @@ things follow from that, both deliberate:
   therefore cannot quietly mean "open to the whole network" — the insecure
   configuration is unreachable by construction rather than by remembering to read
   a warning.
+- **Repeated wrong tokens lock the client out**, and the app says so rather than
+  reporting the server as unreachable. A 429 is treated as retryable by the
+  feedback queue, not permanent — otherwise a lockout would make the queue throw
+  away exactly the data it exists to protect.
 - **Over plain HTTP the token is sniffable.** Cleartext is allowed for loopback
   and private ranges so you can run this at home, and the app's first screen says
   plainly when the token is crossing a network in the clear. The real fix is a
@@ -110,9 +114,6 @@ things follow from that, both deliberate:
   suppresses an alert — guessing would silence real matches. The notification now
   says "hours unknown" instead of pretending confidence.
   `refresh_places.py --report-open` shows the coverage for your own area.
-- **No per-request rate limiting or lockout.** A token is either right or wrong;
-  nothing slows down someone trying many. On a home network behind a tunnel that
-  is proportionate, and it would not be if this were public.
 
 ## Deliberate omissions
 

@@ -48,6 +48,25 @@ export const config = {
    */
   authToken: process.env.AUTH_TOKEN ?? '',
 
+  /** Failed token attempts allowed from one client before it is locked out. */
+  authMaxFailures: num('AUTH_MAX_FAILURES', 10),
+  authWindowMs: num('AUTH_WINDOW_MS', 5 * 60 * 1000),
+  authLockoutMs: num('AUTH_LOCKOUT_MS', 5 * 60 * 1000),
+
+  /**
+   * Take the client address from X-Forwarded-For.
+   *
+   * Off by default, because trusting that header when the server is directly
+   * reachable lets anyone forge an address: they would evade their own limit and
+   * could push someone else's into lockout.
+   *
+   * Turn it on when, and only when, the server sits behind a proxy you control -
+   * a Cloudflare Tunnel, say - which sets the header itself and is the only
+   * thing that can reach the server. Without it every request through a tunnel
+   * shares one address, so one attacker's failures would lock you out too.
+   */
+  trustProxy: (process.env.TRUST_PROXY ?? '') === 'true',
+
   get bindHost(): string {
     if (process.env.BIND_HOST) return process.env.BIND_HOST;
     return this.authToken ? '0.0.0.0' : '127.0.0.1';

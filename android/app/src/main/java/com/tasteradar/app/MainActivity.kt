@@ -183,10 +183,12 @@ class MainActivity : Activity() {
                 { e ->
                     // 401 is worth naming: it means reachable but the token is
                     // wrong, which is a completely different fix from unreachable.
-                    if (e is Api.ApiException && e.status == 401) {
-                        "reached it, but the token is wrong"
-                    } else {
-                        "cannot reach it: ${e.message}"
+                    when {
+                        e is Api.ApiException && e.status == 401 ->
+                            "reached it, but the token is wrong"
+                        e is Api.ApiException && e.status == 429 ->
+                            "locked out after too many wrong tokens - wait a few minutes"
+                        else -> "cannot reach it: ${e.message}"
                     }
                 },
             )

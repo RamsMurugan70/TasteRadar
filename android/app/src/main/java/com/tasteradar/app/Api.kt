@@ -43,7 +43,16 @@ object Api {
      * many times it is tried, a connection failure very likely will.
      */
     class ApiException(message: String, val status: Int = 0) : Exception(message) {
-        val isPermanent: Boolean get() = status in 400..499
+        /**
+         * Worth retrying or not.
+         *
+         * 429 and 408 are 4xx but explicitly mean "try again later", so they
+         * must not be treated as permanent - a rate-limit lockout would
+         * otherwise make the feedback queue throw away everything it holds,
+         * which is precisely the data the queue exists to protect.
+         */
+        val isPermanent: Boolean
+            get() = status in 400..499 && status != 429 && status != 408
     }
 
     private fun request(

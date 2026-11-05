@@ -90,6 +90,7 @@ class GeofenceReceiver : BroadcastReceiver() {
             speedMs = location?.speed,
             hasSpeed = location?.hasSpeed() == true,
             hours = fence.hours,
+            timezone = fence.timezone,
         )
         if (verdict is Gates.Verdict.Suppress) {
             Log.i(TAG, "suppressed ${fence.name}: ${verdict.because}")

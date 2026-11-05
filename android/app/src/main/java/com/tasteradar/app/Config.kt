@@ -23,6 +23,27 @@ object Config {
             .edit().putString("serverUrl", url.trimEnd('/')).apply()
     }
 
+    /** The server's AUTH_TOKEN. Without it every request comes back 401. */
+    fun authToken(context: Context): String =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .getString("authToken", "") ?: ""
+
+    fun setAuthToken(context: Context, token: String) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .edit().putString("authToken", token.trim()).apply()
+    }
+
+    /**
+     * True when the token would cross a network in the clear. Permitted for a
+     * home network, but it is worth saying out loud rather than burying.
+     */
+    fun isCleartextToNetwork(context: Context): Boolean {
+        val url = serverUrl(context)
+        if (!url.startsWith("http://")) return false
+        val host = url.removePrefix("http://").substringBefore(':').substringBefore('/')
+        return host != "localhost" && host != "127.0.0.1" && host != "10.0.2.2"
+    }
+
     // ---- Gates the phone owns, because they depend on this moment ----
 
     /** Above this you cannot stop, so there is nothing to tell you about. */

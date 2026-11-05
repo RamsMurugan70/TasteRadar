@@ -1,8 +1,10 @@
 package com.tasteradar.app
 
+import android.util.Log
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.Calendar
+import java.time.Instant
+import java.time.ZoneId
 
 /**
  * Opening hours, evaluated at alert time.
@@ -35,11 +37,32 @@ object Hours {
         }.ifEmpty { null }
     }
 
-    /** Calendar.SUNDAY is 1, so subtracting one gives Sunday = 0. */
-    fun minutesSinceSunday(at: Long): Int {
-        val cal = Calendar.getInstance().apply { timeInMillis = at }
-        val day = cal.get(Calendar.DAY_OF_WEEK) - Calendar.SUNDAY
-        return day * 24 * 60 + cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE)
+    /**
+     * Wall-clock position in the week, in the zone the hours were published in.
+     *
+     * Opening hours are wall clock: 11:00 means eleven in the morning where the
+     * place is, whatever the clock in your pocket says. Judging them against the
+     * phone's own zone is right only while you are in the same city as the place.
+     *
+     * A null or unrecognised zone falls back to the device's, which is the old
+     * behaviour and still correct for a single-city install.
+     */
+    fun minutesSinceSunday(at: Long, timezone: String? = null): Int {
+        val zone = zoneOf(timezone)
+        val local = Instant.ofEpochMilli(at).atZone(zone)
+        // DayOfWeek is MONDAY=1 .. SUNDAY=7, so modulo 7 puts Sunday at 0.
+        val day = local.dayOfWeek.value % 7
+        return day * 24 * 60 + local.hour * 60 + local.minute
+    }
+
+    private fun zoneOf(timezone: String?): ZoneId {
+        if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
+        return try {
+            ZoneId.of(timezone)
+        } catch (e: Exception) {
+            Log.w("Hours", "unknown zone \"$timezone\", using the device's")
+            ZoneId.systemDefault()
+        }
     }
 
     private fun contains(p: Period, t: Int): Boolean =
@@ -47,16 +70,16 @@ object Hours {
             (t + WEEK_MINUTES >= p.open && t + WEEK_MINUTES < p.close)
 
     /** Null when the hours are unknown. */
-    fun isOpenAt(periods: List<Period>?, at: Long): Boolean? {
+    fun isOpenAt(periods: List<Period>?, at: Long, timezone: String? = null): Boolean? {
         if (periods.isNullOrEmpty()) return null
-        val t = minutesSinceSunday(at)
+        val t = minutesSinceSunday(at, timezone)
         return periods.any { contains(it, t) }
     }
 
     /** Minutes left in the period currently open; null if unknown or closed. */
-    fun minutesUntilClose(periods: List<Period>?, at: Long): Int? {
+    fun minutesUntilClose(periods: List<Period>?, at: Long, timezone: String? = null): Int? {
         if (periods.isNullOrEmpty()) return null
-        val t = minutesSinceSunday(at)
+        val t = minutesSinceSunday(at, timezone)
         var best: Int? = null
         for (p in periods) {
             for (candidate in intArrayOf(t, t + WEEK_MINUTES)) {

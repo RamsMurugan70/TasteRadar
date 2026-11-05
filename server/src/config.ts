@@ -38,4 +38,18 @@ export const config = {
 
   /** Single-user install: one row in users, created on first boot. */
   defaultUserId: process.env.DEFAULT_USER_ID ?? 'me',
+
+  /**
+   * Shared bearer token. Every request must carry it.
+   *
+   * Leave it unset and the server binds to loopback only - see bindHost. That
+   * way "no token" cannot accidentally mean "open to the whole network", which
+   * is the mistake a warning in a log file does not prevent.
+   */
+  authToken: process.env.AUTH_TOKEN ?? '',
+
+  get bindHost(): string {
+    if (process.env.BIND_HOST) return process.env.BIND_HOST;
+    return this.authToken ? '0.0.0.0' : '127.0.0.1';
+  },
 } as const;

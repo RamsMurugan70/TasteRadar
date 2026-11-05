@@ -165,24 +165,27 @@ def fetch_osm(tiles, radius_m):
     return out
 
 
-def upsert(con, rows) -> tuple[int, int]:
+def upsert(con, rows, tz_name: str) -> tuple[int, int]:
     before = con.execute("SELECT COUNT(*) FROM places").fetchone()[0]
     con.executemany(
         """INSERT INTO places (id, source, name, lat, lng, types, primary_type,
-                               price_level, rating, rating_count, summary, hours, fetched_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               price_level, rating, rating_count, summary, hours,
+                               timezone, fetched_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET
              name = excluded.name, lat = excluded.lat, lng = excluded.lng,
              types = excluded.types, primary_type = excluded.primary_type,
              price_level = excluded.price_level, rating = excluded.rating,
              rating_count = excluded.rating_count, summary = excluded.summary,
-             hours = excluded.hours, fetched_at = excluded.fetched_at""",
+             hours = excluded.hours, timezone = excluded.timezone,
+             fetched_at = excluded.fetched_at""",
         [
             (
                 r["id"], r["source"], r["name"], r["lat"], r["lng"],
                 json.dumps(r.get("types", [])), r.get("primary_type"),
                 r.get("price_level"), r.get("rating"), r.get("rating_count"),
-                r.get("summary", ""), hours_lib.dumps(r.get("hours")), now_iso(),
+                r.get("summary", ""), hours_lib.dumps(r.get("hours")),
+                r.get("timezone") or tz_name, now_iso(),
             )
             for r in rows
             if r.get("lat") is not None and r.get("lng") is not None
@@ -205,12 +208,19 @@ def prune(con) -> int:
 
 def report_open(con) -> None:
     """Sanity-check the stored hours against the clock, by eye."""
-    now = datetime.now()
-    rows = con.execute("SELECT name, hours FROM places ORDER BY name").fetchall()
+    rows = con.execute("SELECT name, hours, timezone FROM places ORDER BY name").fetchall()
     unknown = 0
-    print(f"as of {now:%a %H:%M}\n")
-    for name, raw in rows:
+
+    # Each place is judged in its own zone, so printing only the machine's clock
+    # makes a correct answer look wrong.
+    zones = sorted({r[2] for r in rows if r[2]})
+    print(f"machine clock {hours_lib.local_now(None):%a %H:%M}")
+    for z in zones:
+        print(f"places in {z}: {hours_lib.local_now(z):%a %H:%M}")
+    print()
+    for name, raw, tz_name in rows:
         h = json.loads(raw) if raw else None
+        now = hours_lib.local_now(tz_name)
         open_now = hours_lib.is_open_at(h, now)
         if open_now is None:
             unknown += 1
@@ -237,6 +247,8 @@ def main() -> None:
     ap.add_argument("--report-open", action="store_true",
                     help="print which stored places are open right now, and stop")
     ap.add_argument("--fixture", default="../spike1-scoring/fixture_candidates.json")
+    ap.add_argument("--timezone", default=os.environ.get("PLACES_TIMEZONE", "Asia/Kolkata"),
+                    help="IANA zone the fetched places' hours are in")
     args = ap.parse_args()
 
     con = sqlite3.connect(args.db)
@@ -264,7 +276,7 @@ def main() -> None:
             if "regularOpeningHours" in r:
                 r["hours"] = hours_lib.normalise_google(r["regularOpeningHours"])
 
-    added, seen = upsert(con, rows)
+    added, seen = upsert(con, rows, args.timezone)
     pruned = prune(con)
 
     with open(args.reviews_out, "w", encoding="utf-8") as f:
@@ -281,4 +293,11 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    # Without this, piping the output into head prints a BrokenPipeError
+    # traceback, which looks like a failure and is not one.
+    try:
+        from signal import SIGPIPE, SIG_DFL, signal
+        signal(SIGPIPE, SIG_DFL)
+    except ImportError:
+        pass
     main()

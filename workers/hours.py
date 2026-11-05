@@ -20,12 +20,31 @@ from __future__ import annotations
 
 import json
 import re
-from datetime import datetime
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 WEEK_MINUTES = 7 * 24 * 60
 
 # Google's day numbering: 0 = Sunday.
 _OSM_DAYS = {"su": 0, "mo": 1, "tu": 2, "we": 3, "th": 4, "fr": 5, "sa": 6}
+
+
+def local_now(tz_name: str | None, at: datetime | None = None) -> datetime:
+    """Wall-clock time in the zone the hours were published in.
+
+    Opening hours are wall clock: "11:00-23:00" means eleven in the morning
+    where the restaurant is, whatever the clock in your pocket says. Comparing
+    them against the phone's own zone is correct only while you are in the same
+    city as the place, and silently wrong as soon as you are not.
+
+    A null zone falls back to the machine's own, which is the old behaviour and
+    still right for a single-city install.
+    """
+    if at is None:
+        at = datetime.now(timezone.utc)
+    if at.tzinfo is None:
+        at = at.replace(tzinfo=timezone.utc)
+    return at.astimezone(ZoneInfo(tz_name)) if tz_name else at.astimezone()
 
 
 def minutes_since_sunday(dt: datetime) -> int:

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Run: python3 -m unittest test_hours -v"""
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 
 from hours import (
     WEEK_MINUTES,
+    local_now,
     is_open_at,
     minutes_since_sunday,
     minutes_until_close,
@@ -121,3 +122,40 @@ class TestClosingSoon(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTimezone(unittest.TestCase):
+    """The gap this closes: hours are wall clock in the place's zone."""
+
+    def setUp(self):
+        # Thursday 11:00-23:00, as the worker would store it.
+        self.h = normalise_google({"periods": [
+            {"open": {"day": 4, "hour": 11, "minute": 0},
+             "close": {"day": 4, "hour": 23, "minute": 0}}
+        ]})
+        # 2026-11-05T04:00Z is 09:30 in Chennai and 04:00 in London.
+        self.instant = datetime(2026, 11, 5, 4, 0, tzinfo=timezone.utc)
+
+    def test_same_instant_reads_differently_per_zone(self):
+        chennai = local_now("Asia/Kolkata", self.instant)
+        london = local_now("Europe/London", self.instant)
+        self.assertEqual((chennai.hour, chennai.minute), (9, 30))
+        self.assertEqual((london.hour, london.minute), (4, 0))
+
+    def test_closed_in_chennai_before_opening(self):
+        self.assertFalse(is_open_at(self.h, local_now("Asia/Kolkata", self.instant)))
+
+    def test_open_in_chennai_at_lunch(self):
+        noonish = datetime(2026, 11, 5, 7, 0, tzinfo=timezone.utc)  # 12:30 IST
+        self.assertTrue(is_open_at(self.h, local_now("Asia/Kolkata", noonish)))
+
+    def test_a_phone_in_another_zone_gets_the_place_right(self):
+        # You are in London; the Chennai place's hours must still be judged in
+        # Chennai. At 18:00 UTC it is 23:30 in Chennai, so it has shut.
+        evening = datetime(2026, 11, 5, 18, 0, tzinfo=timezone.utc)
+        self.assertFalse(is_open_at(self.h, local_now("Asia/Kolkata", evening)))
+        # And the naive reading - the phone's own zone - would have said open.
+        self.assertTrue(is_open_at(self.h, local_now("Europe/London", evening)))
+
+    def test_null_zone_falls_back_without_raising(self):
+        self.assertIsInstance(local_now(None, self.instant), datetime)

@@ -64,6 +64,8 @@ export function fenceRoutes(app: FastifyInstance, db: Db): void {
           // A fence set is drawn once and then used for hours, so "open now"
           // computed at this moment would be stale by the time it mattered.
           hours: parseHours(f.hours),
+          // Sent with the hours, because hours without their zone are a guess.
+          timezone: f.timezone,
         })),
       };
     },

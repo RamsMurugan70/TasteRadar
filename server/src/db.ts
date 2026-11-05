@@ -9,8 +9,28 @@ export type Db = DatabaseSync;
 export function openDb(file: string = config.databaseFile): Db {
   const db = new DatabaseSync(file);
   db.exec(SCHEMA_SQL);
+  addMissingColumns(db);
   ensureUser(db, config.defaultUserId);
   return db;
+}
+
+/**
+ * CREATE TABLE IF NOT EXISTS does nothing to a table that already exists, so a
+ * column added after someone has been running the server needs its own step.
+ * ALTER TABLE ADD COLUMN errors if the column is there, hence the check.
+ */
+function addMissingColumns(db: Db): void {
+  const wanted: Array<[table: string, column: string, type: string]> = [
+    ['places', 'timezone', 'TEXT'],
+  ];
+  for (const [table, column, type] of wanted) {
+    const existing = db.prepare(`PRAGMA table_info(${table})`).all() as unknown as {
+      name: string;
+    }[];
+    if (!existing.some((c) => c.name === column)) {
+      db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
+    }
+  }
 }
 
 export function nowIso(): string {
@@ -61,6 +81,8 @@ export interface Candidate {
   lastAlertedAt: string | null;
   /** Opening hours as the worker normalised them, or null when unknown. */
   hours: string | null;
+  /** The IANA zone those hours are in, or null to mean the phone's own zone. */
+  timezone: string | null;
 }
 
 /**
@@ -94,6 +116,7 @@ export function candidateFences(db: Db, userId: string, centre: Point): Candidat
               p.lng,
               p.rating,
               p.hours,
+              p.timezone,
               s.score,
               s.reason,
               (SELECT MAX(a.fired_at) FROM alerts a

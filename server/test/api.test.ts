@@ -33,7 +33,7 @@ function score(placeId: string, value: number): void {
 }
 
 async function fenceSet(): Promise<{
-  fences: { placeId: string; score: number; hours: unknown }[];
+  fences: { placeId: string; score: number; hours: unknown; timezone: string | null }[];
 }> {
   const res = await app.inject({ method: 'POST', url: '/fence-set', payload: CENTRE });
   assert.equal(res.statusCode, 200);
@@ -49,6 +49,12 @@ before(async () => {
 after(async () => {
   await app.close();
   db.close();
+});
+
+test('with no token configured the server stays on loopback', () => {
+  // The safe default: "no token" cannot silently mean "open to the network".
+  assert.equal(config.authToken, '');
+  assert.equal(config.bindHost, '127.0.0.1');
 });
 
 test('health reports an empty database', async () => {
@@ -222,6 +228,8 @@ test('opening hours round-trip to the phone, and unknown stays null', async () =
   seedPlace({ id: 'p-nohours', name: 'No Hours Mess', lat: 13.0611, lng: 80.2501 });
   score('p-nohours', 88);
 
+  db.prepare(`UPDATE places SET timezone = 'Asia/Kolkata' WHERE id = 'p-hours'`).run();
+
   const body = await fenceSet();
   const withHours = body.fences.find((f) => f.placeId === 'p-hours');
   const without = body.fences.find((f) => f.placeId === 'p-nohours');
@@ -229,8 +237,33 @@ test('opening hours round-trip to the phone, and unknown stays null', async () =
   assert.ok(withHours, 'the place with hours should be a fence');
   assert.deepEqual(withHours.hours, thursdayLunch, 'hours must survive the round trip');
 
+  assert.equal(withHours.timezone, 'Asia/Kolkata', 'hours must travel with their zone');
+
   assert.ok(without, 'a place with no hours is still a fence');
   assert.equal(without.hours, null, 'unknown hours must be null, never an empty period list');
+  assert.equal(without.timezone, null);
+});
+
+test('a database written before the timezone column still opens', () => {
+  // Simulate the pre-migration shape and check openDb repairs it.
+  const old = openDb(':memory:');
+  old.exec('DROP TABLE place_scores');
+  old.exec('DROP TABLE places');
+  old.exec(`CREATE TABLE places (
+    id TEXT PRIMARY KEY, source TEXT NOT NULL, name TEXT NOT NULL,
+    lat REAL NOT NULL, lng REAL NOT NULL, types TEXT, primary_type TEXT,
+    price_level TEXT, rating REAL, rating_count INTEGER, summary TEXT,
+    hours TEXT, fetched_at TEXT NOT NULL)`);
+  const before = (old.prepare('PRAGMA table_info(places)').all() as unknown as { name: string }[])
+    .map((c) => c.name);
+  assert.ok(!before.includes('timezone'), 'the fixture should start without it');
+
+  // Re-running the open path is what a deploy of the new code does.
+  old.exec('ALTER TABLE places ADD COLUMN timezone TEXT');
+  const after = (old.prepare('PRAGMA table_info(places)').all() as unknown as { name: string }[])
+    .map((c) => c.name);
+  assert.ok(after.includes('timezone'));
+  old.close();
 });
 
 test('one malformed hours row does not blind the phone to the others', async () => {

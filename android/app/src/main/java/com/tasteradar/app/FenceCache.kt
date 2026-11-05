@@ -36,7 +36,8 @@ object FenceCache {
                     .put("score", f.score)
                     .put("reason", f.reason)
                     .put("seenBefore", f.seenBefore)
-                    .put("hours", hoursToJson(f.hours)),
+                    .put("hours", hoursToJson(f.hours))
+                    .put("timezone", f.timezone),
             )
         }
         prefs(context).edit()
@@ -64,6 +65,7 @@ object FenceCache {
                 reason = f.optString("reason"),
                 seenBefore = f.optBoolean("seenBefore", false),
                 hours = Hours.parse(f.optJSONObject("hours")),
+                timezone = f.optString("timezone").ifBlank { null },
             )
         }
     }

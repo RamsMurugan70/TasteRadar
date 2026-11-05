@@ -30,7 +30,9 @@ class MainActivity : Activity() {
     private lateinit var status: TextView
     private lateinit var wants: TextView
     private lateinit var serverField: EditText
+    private lateinit var tokenField: EditText
     private lateinit var wantField: EditText
+    private lateinit var warning: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +54,21 @@ class MainActivity : Activity() {
             setText(Config.serverUrl(this@MainActivity))
         }
         root.addView(serverField)
+
+        root.addView(label("Token"))
+        tokenField = EditText(this).apply {
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            hint = "the server's AUTH_TOKEN"
+            setText(Config.authToken(this@MainActivity))
+        }
+        root.addView(tokenField)
         root.addView(button("Save and check") { saveServer() })
+
+        warning = TextView(this).apply {
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+            setTextColor(Color.rgb(180, 60, 0))
+        }
+        root.addView(warning)
 
         root.addView(label("Permissions"))
         root.addView(button("Grant location and notifications") { askPermissions() })
@@ -136,6 +152,15 @@ class MainActivity : Activity() {
             append(if (savedAt == 0L) "never" else android.text.format.DateUtils.getRelativeTimeSpanString(savedAt))
             append('\n')
             append("Alerts in the last 2 days: ").append(alertsToday).append('\n')
+            warning.text = when {
+                Config.authToken(this@MainActivity).isBlank() ->
+                    "No token set. The server refuses every request without one, " +
+                        "and with no AUTH_TOKEN it only listens on loopback."
+                Config.isCleartextToNetwork(this@MainActivity) ->
+                    "Plain HTTP over the network: the token is sniffable on shared " +
+                        "wifi. Fine at home, worth a tunnel anywhere else."
+                else -> ""
+            }
             val queued = FeedbackQueue.size(this@MainActivity)
             if (queued > 0) {
                 append("Feedback waiting to send: ").append(queued).append('\n')
@@ -150,9 +175,21 @@ class MainActivity : Activity() {
 
     private fun saveServer() {
         Config.setServerUrl(this, serverField.text.toString())
+        Config.setAuthToken(this, tokenField.text.toString())
+        refreshStatus()
         thread {
-            val message = runCatching { Api.health(this) }
-                .fold({ "server reachable" }, { "cannot reach it: ${it.message}" })
+            val message = runCatching { Api.health(this) }.fold(
+                { "server reachable" },
+                { e ->
+                    // 401 is worth naming: it means reachable but the token is
+                    // wrong, which is a completely different fix from unreachable.
+                    if (e is Api.ApiException && e.status == 401) {
+                        "reached it, but the token is wrong"
+                    } else {
+                        "cannot reach it: ${e.message}"
+                    }
+                },
+            )
             runOnUiThread { toast(message) }
         }
     }

@@ -20,6 +20,8 @@ data class Fence(
     val seenBefore: Boolean,
     /** Null means the hours are unknown, which never suppresses an alert. */
     val hours: List<Hours.Period>?,
+    /** The IANA zone the hours are in; null means judge them in the device's. */
+    val timezone: String?,
 )
 
 data class FenceSet(val umbrella: Umbrella, val fenceRadiusM: Float, val fences: List<Fence>)
@@ -56,6 +58,8 @@ object Api {
             connectTimeout = TIMEOUT_MS
             readTimeout = TIMEOUT_MS
             doInput = true
+            val token = Config.authToken(context)
+            if (token.isNotBlank()) setRequestProperty("Authorization", "Bearer $token")
             if (body != null) {
                 doOutput = true
                 setRequestProperty("Content-Type", "application/json")
@@ -102,6 +106,7 @@ object Api {
                 reason = f.optString("reason"),
                 seenBefore = f.optBoolean("seenBefore", false),
                 hours = Hours.parse(f.optJSONObject("hours")),
+                timezone = f.optString("timezone").ifBlank { null },
             )
         }
         return FenceSet(umbrella, json.optDouble("fenceRadiusM", 150.0).toFloat(), fences)

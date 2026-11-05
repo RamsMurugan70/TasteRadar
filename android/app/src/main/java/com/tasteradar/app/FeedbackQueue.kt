@@ -104,7 +104,7 @@ object FeedbackQueue {
                 // which case create it now so there is something to attach to.
                 val alertId = FenceCache.alertId(context, item.placeId) ?: run {
                     val fence = FenceCache.fenceById(context, item.placeId)
-                        ?: Fence(item.placeId, item.wantId, "", 0.0, 0.0, 0, "", false, null)
+                        ?: Fence(item.placeId, item.wantId, "", 0.0, 0.0, 0, "", false, null, null)
                     Api.postAlert(context, fence, null, null)
                         .also { FenceCache.putAlertId(context, item.placeId, it) }
                 }

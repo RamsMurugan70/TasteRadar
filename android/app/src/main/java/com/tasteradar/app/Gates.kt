@@ -24,6 +24,7 @@ object Gates {
         speedMs: Float?,
         hasSpeed: Boolean,
         hours: List<Hours.Period>? = null,
+        timezone: String? = null,
         now: Long = System.currentTimeMillis(),
     ): Verdict {
         val minutes = minutesIntoDay(now)
@@ -38,10 +39,10 @@ object Gates {
 
         // Three states, not two. Unknown hours allow the alert: guessing would
         // silence real matches, and plenty of small places publish nothing.
-        when (Hours.isOpenAt(hours, now)) {
+        when (Hours.isOpenAt(hours, now, timezone)) {
             false -> return Verdict.Suppress("closed right now")
             true -> {
-                val left = Hours.minutesUntilClose(hours, now)
+                val left = Hours.minutesUntilClose(hours, now, timezone)
                 if (left != null && left < Config.MIN_MINUTES_BEFORE_CLOSING) {
                     return Verdict.Suppress("closes in $left min")
                 }

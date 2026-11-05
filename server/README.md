@@ -12,6 +12,13 @@ Runs today. Tested end to end against a live server.
 npm install
 ```
 
+Set a token first, or the server will only listen on loopback and the phone will
+not be able to reach it:
+
+```bash
+echo "AUTH_TOKEN=$(openssl rand -hex 32)" >> .env
+```
+
 ```bash
 npm run build && npm run migrate
 ```
@@ -34,7 +41,14 @@ python3 score_places.py --db ../server/taste-radar.db --dry-run --reviews-from .
 curl -X POST localhost:5090/fence-set -H 'content-type: application/json' -d '{"lat":13.0604,"lng":80.2496}'
 ```
 
-No API keys are needed for any of that. `POST /wants` falls back to a keyword
+Every request needs `Authorization: Bearer $AUTH_TOKEN`, so the curl above
+becomes:
+
+```bash
+curl -X POST localhost:5090/fence-set -H "content-type: application/json" -H "authorization: Bearer $AUTH_TOKEN" -d '{"lat":13.0604,"lng":80.2496}'
+```
+
+No Google or Anthropic keys are needed for any of that. `POST /wants` falls back to a keyword
 extractor without `ANTHROPIC_API_KEY`, and says so in its response rather than
 pretending a model read your sentence.
 
@@ -82,6 +96,8 @@ dependency that many managed Postgres offerings make awkward.
 
 - `node:sqlite` is still marked experimental in Node 22. It is stable in Node 24.
   If that bothers you, `better-sqlite3` is a drop-in for `src/db.ts` alone.
-- There is no authentication. It binds `0.0.0.0` and assumes one trusted user on
-  a private network or behind a tunnel. Do not expose it to the internet as-is —
-  accounts arrive with the multi-user phase.
+- Authentication is one shared bearer token, which is the right size for one
+  user and no accounts. With no token set the server binds to loopback only, so
+  the open configuration cannot be reached from the network by accident.
+- There is no rate limiting on token attempts. Behind a tunnel on a home network
+  that is proportionate; it would not be if this were public.

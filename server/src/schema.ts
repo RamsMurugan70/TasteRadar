@@ -54,6 +54,10 @@ CREATE TABLE IF NOT EXISTS places (
   rating_count INTEGER,
   summary      TEXT,
   hours        TEXT,
+  -- IANA zone the hours are expressed in. Null falls back to the phone's own
+  -- zone, which is right while you are in the same city as the place and wrong
+  -- the moment you are not.
+  timezone     TEXT,
   fetched_at   TEXT NOT NULL
 );
 -- No PostGIS here, so the candidate query is a bounding box on these two

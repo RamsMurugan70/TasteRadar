@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Android blocks plain HTTP from API 28 onwards. The server is expected to sit on
-  your own network or behind a tunnel, so cleartext is permitted for private
-  address ranges only - never for the public internet.
+  Android blocks plain HTTP from API 28 onwards.
 
-  Put the server behind HTTPS and you can delete this file and the
-  networkSecurityConfig attribute with it.
+  Cleartext is permitted here for loopback and private address ranges, so the
+  server can be run on your own network while you are building this. It is a
+  real tradeoff and not a free one: the bearer token travels in the clear, so
+  anyone on the same wifi can read it and then read your tastes. The app says so
+  on its own first screen rather than leaving it to this comment.
+
+  The fix is HTTPS, and the cheapest route to it is a tunnel - the same
+  Cloudflare Tunnel arrangement EquiStar already uses, which gives you a
+  hostname and a certificate without owning a domain or opening a port. Once the
+  server is behind one, point the app at the https:// URL, delete this file and
+  drop android:networkSecurityConfig from the manifest.
 -->
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">10.0.2.2</domain>
         <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">127.0.0.1</domain>
         <domain includeSubdomains="true">192.168.0.0</domain>
         <domain includeSubdomains="true">192.168.1.0</domain>
     </domain-config>

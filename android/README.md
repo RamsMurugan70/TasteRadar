@@ -82,20 +82,37 @@ Now press **Redraw around me now**. With the fixture seeded you are unlikely to
 be standing in Nungambakkam, so expect zero fences unless you are — point
 `refresh_places.py` at where you actually live to see it work.
 
+## Security
+
+The server requires a bearer token on every request, and the app sends it. Two
+things follow from that, both deliberate:
+
+- **With no `AUTH_TOKEN` set, the server binds to `127.0.0.1` only.** "No token"
+  therefore cannot quietly mean "open to the whole network" — the insecure
+  configuration is unreachable by construction rather than by remembering to read
+  a warning.
+- **Over plain HTTP the token is sniffable.** Cleartext is allowed for loopback
+  and private ranges so you can run this at home, and the app's first screen says
+  plainly when the token is crossing a network in the clear. The real fix is a
+  tunnel in front of the server; `res/xml/network_security_config.xml` says how.
+
 ## Known gaps
 
-- **Hours are only as good as the source.** The open-now gate works, but places
-  with no published hours are treated as *unknown*, which never suppresses an
-  alert — guessing would silence real matches. `refresh_places.py --report-open`
-  prints what is known, so you can see the coverage for your own area.
-- **Hours are local wall clock.** For a Chennai-only app that is unambiguous.
-  Travel across a timezone and the gate reads the wrong hours; fixing it means
-  storing an IANA zone per place and comparing in that zone.
-- **No authentication anywhere.** The server trusts whoever can reach it, and the
-  app sends no credential. Keep it on your own network.
-- **Cleartext HTTP is permitted for private address ranges only**, via
-  `res/xml/network_security_config.xml`. Put the server behind HTTPS and that
-  file can go.
+- **Hours come from one configured zone, not per place.** `PLACES_TIMEZONE`
+  (default `Asia/Kolkata`) is written onto every place the worker fetches, and
+  the phone judges each place's hours in that zone rather than its own. That
+  fixes the real bug — a Chennai place is still judged in Chennai time when you
+  are in London. What it does not do is support places in *different* zones in
+  one install, which needs a per-place zone from the Places API. I could not
+  confirm that field's name from this environment, so I did not guess it into
+  the worker.
+- **Places that publish no hours are treated as unknown**, which never
+  suppresses an alert — guessing would silence real matches. The notification now
+  says "hours unknown" instead of pretending confidence.
+  `refresh_places.py --report-open` shows the coverage for your own area.
+- **No per-request rate limiting or lockout.** A token is either right or wrong;
+  nothing slows down someone trying many. On a home network behind a tunnel that
+  is proportionate, and it would not be if this were public.
 
 ## Deliberate omissions
 

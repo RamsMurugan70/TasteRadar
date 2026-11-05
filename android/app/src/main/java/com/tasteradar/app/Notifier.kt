@@ -65,6 +65,13 @@ object Notifier {
                 if (isNotEmpty()) append(" · ")
                 append(fence.reason)
             }
+            // Unknown hours never suppress the alert, so say so instead. Better
+            // a hedged alert than a silent one, and better than a confident one
+            // about a place that turns out to be shut.
+            if (fence.hours == null) {
+                if (isNotEmpty()) append(" · ")
+                append("hours unknown")
+            }
         }
 
         val notification: Notification = Notification.Builder(context, CHANNEL_ID)

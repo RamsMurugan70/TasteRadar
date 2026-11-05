@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Android blocks plain HTTP from API 28 onwards. The server is expected to sit on
+  your own network or behind a tunnel, so cleartext is permitted for private
+  address ranges only - never for the public internet.
+
+  Put the server behind HTTPS and you can delete this file and the
+  networkSecurityConfig attribute with it.
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">192.168.0.0</domain>
+        <domain includeSubdomains="true">192.168.1.0</domain>
+    </domain-config>
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>

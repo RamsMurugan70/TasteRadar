@@ -19,10 +19,11 @@ want, and then it interrupts you.
 ## Status
 
 The **server and its workers run today** — seed it, score it, and `POST /fence-set` returns
-scored matches with reasons. The **Android app does not exist yet**: `spike2-geofence/` is a
-measuring instrument, not a product, and deliberately posts no notifications at all.
+scored matches with reasons, verified against a live server. The **app is written but has never
+been compiled**: there was no Android SDK where it was built, so treat the first build as part
+of the work.
 
-Two experiments still gate the app itself, and either one can say no.
+Two experiments still gate whether any of it is worth finishing, and either can say no.
 
 | | Question it answers | Gate it has to clear |
 | --- | --- | --- |
@@ -56,6 +57,7 @@ geometry.
 
 | Path | What it is |
 | --- | --- |
+| [`android/`](android/) | Kotlin. The app you carry: the umbrella-fence cycle, the local alert path, the three feedback buttons. |
 | [`server/`](server/) | TypeScript + Fastify + SQLite. Compiles wants, holds the places, answers *what should I watch around here?* |
 | [`workers/`](workers/) | Python. Nightly place refresh and batch scoring — everything that costs money, kept out of the alert path. |
 | [`spike1-scoring/`](spike1-scoring/) | Python. Fetch Chennai restaurants, score them against a free-text want, grade the result blind against your own judgement. |

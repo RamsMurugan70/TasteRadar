@@ -35,6 +35,9 @@ object Config {
     const val QUIET_FROM_MINUTES = 22 * 60 + 30
     const val QUIET_TO_MINUTES = 8 * 60
 
+    /** No point sending you somewhere that is about to shut. */
+    const val MIN_MINUTES_BEFORE_CLOSING = 30
+
     const val MAX_ALERTS_PER_DAY = 2
     const val MIN_GAP_BETWEEN_ALERTS_MS = 90 * 60 * 1000L
 

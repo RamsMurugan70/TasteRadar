@@ -18,6 +18,8 @@ data class Fence(
     val score: Int,
     val reason: String,
     val seenBefore: Boolean,
+    /** Null means the hours are unknown, which never suppresses an alert. */
+    val hours: List<Hours.Period>?,
 )
 
 data class FenceSet(val umbrella: Umbrella, val fenceRadiusM: Float, val fences: List<Fence>)
@@ -90,6 +92,7 @@ object Api {
                 score = f.getInt("score"),
                 reason = f.optString("reason"),
                 seenBefore = f.optBoolean("seenBefore", false),
+                hours = Hours.parse(f.optJSONObject("hours")),
             )
         }
         return FenceSet(umbrella, json.optDouble("fenceRadiusM", 150.0).toFloat(), fences)

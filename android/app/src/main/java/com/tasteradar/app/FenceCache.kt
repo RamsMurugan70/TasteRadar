@@ -35,7 +35,8 @@ object FenceCache {
                     .put("lng", f.lng)
                     .put("score", f.score)
                     .put("reason", f.reason)
-                    .put("seenBefore", f.seenBefore),
+                    .put("seenBefore", f.seenBefore)
+                    .put("hours", hoursToJson(f.hours)),
             )
         }
         prefs(context).edit()
@@ -62,8 +63,16 @@ object FenceCache {
                 score = f.getInt("score"),
                 reason = f.optString("reason"),
                 seenBefore = f.optBoolean("seenBefore", false),
+                hours = Hours.parse(f.optJSONObject("hours")),
             )
         }
+    }
+
+    private fun hoursToJson(periods: List<Hours.Period>?): JSONObject? {
+        if (periods == null) return null
+        val array = JSONArray()
+        periods.forEach { array.put(JSONObject().put("o", it.open).put("c", it.close)) }
+        return JSONObject().put("periods", array)
     }
 
     fun fenceById(context: Context, placeId: String): Fence? =

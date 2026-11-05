@@ -23,6 +23,7 @@ object Gates {
         context: Context,
         speedMs: Float?,
         hasSpeed: Boolean,
+        hours: List<Hours.Period>? = null,
         now: Long = System.currentTimeMillis(),
     ): Verdict {
         val minutes = minutesIntoDay(now)
@@ -33,6 +34,19 @@ object Gates {
         // 0.0 on Android, which would let an alert through on a motorway.
         if (hasSpeed && speedMs != null && speedMs > Config.MAX_SPEED_MS) {
             return Verdict.Suppress("moving at ${(speedMs * 3.6).toInt()} km/h")
+        }
+
+        // Three states, not two. Unknown hours allow the alert: guessing would
+        // silence real matches, and plenty of small places publish nothing.
+        when (Hours.isOpenAt(hours, now)) {
+            false -> return Verdict.Suppress("closed right now")
+            true -> {
+                val left = Hours.minutesUntilClose(hours, now)
+                if (left != null && left < Config.MIN_MINUTES_BEFORE_CLOSING) {
+                    return Verdict.Suppress("closes in $left min")
+                }
+            }
+            null -> Unit // hours unknown
         }
 
         if (!inAnyMealWindow(minutes)) return Verdict.Suppress("not a mealtime")

@@ -32,7 +32,9 @@ function score(placeId: string, value: number): void {
   ).run(wantId, placeId, value, nowIso());
 }
 
-async function fenceSet(): Promise<{ fences: { placeId: string; score: number }[] }> {
+async function fenceSet(): Promise<{
+  fences: { placeId: string; score: number; hours: unknown }[];
+}> {
   const res = await app.inject({ method: 'POST', url: '/fence-set', payload: CENTRE });
   assert.equal(res.statusCode, 200);
   return res.json();
@@ -179,6 +181,42 @@ test('the fence set is capped and nothing is stored at full precision', async ()
     .get() as unknown as { centre_lat: number; centre_lng: number };
   assert.notEqual(stored.centre_lat, CENTRE.lat, 'centre must be rounded before storage');
   assert.ok(Math.abs(stored.centre_lat - CENTRE.lat) < 0.02);
+});
+
+test('opening hours round-trip to the phone, and unknown stays null', async () => {
+  // The worker's normalised shape: minutes since Sunday 00:00, close > open.
+  // Thursday 11:00-23:00 is 4*1440+660 to 4*1440+1380.
+  const thursdayLunch = { periods: [{ o: 4 * 1440 + 660, c: 4 * 1440 + 1380 }] };
+  db.prepare(
+    `INSERT OR REPLACE INTO places (id, source, name, lat, lng, rating, hours, fetched_at)
+     VALUES ('p-hours', 'test', 'Hours Mess', 13.0610, 80.2500, 4.5, ?, ?)`,
+  ).run(JSON.stringify(thursdayLunch), nowIso());
+  score('p-hours', 90);
+
+  seedPlace({ id: 'p-nohours', name: 'No Hours Mess', lat: 13.0611, lng: 80.2501 });
+  score('p-nohours', 88);
+
+  const body = await fenceSet();
+  const withHours = body.fences.find((f) => f.placeId === 'p-hours');
+  const without = body.fences.find((f) => f.placeId === 'p-nohours');
+
+  assert.ok(withHours, 'the place with hours should be a fence');
+  assert.deepEqual(withHours.hours, thursdayLunch, 'hours must survive the round trip');
+
+  assert.ok(without, 'a place with no hours is still a fence');
+  assert.equal(without.hours, null, 'unknown hours must be null, never an empty period list');
+});
+
+test('one malformed hours row does not blind the phone to the others', async () => {
+  db.prepare(`UPDATE places SET hours = 'not json' WHERE id = 'p-hours'`).run();
+
+  const body = await fenceSet();
+  const broken = body.fences.find((f) => f.placeId === 'p-hours');
+  assert.ok(broken, 'the fence is still returned');
+  assert.equal(broken.hours, null, 'unparseable hours degrade to unknown');
+  assert.ok(body.fences.length > 1, 'every other fence still comes back');
+
+  db.prepare(`UPDATE places SET hours = NULL WHERE id = 'p-hours'`).run();
 });
 
 test('deleting a want removes its fences', async () => {

@@ -1,22 +1,1406 @@
 [
-  {"id":"fx:01","source":"fixture","name":"Fixture Malabar Mess","area":"Nungambakkam","lat":13.0604,"lng":80.2496,"rating":4.4,"rating_count":1820,"price_level":"PRICE_LEVEL_MODERATE","types":["restaurant","indian_restaurant"],"primary_type":"indian_restaurant","summary":"Kerala cooking, parotta and appam","reviews":["The beef ularthiyathu with malabar parotta is the reason I keep coming back.","Portions are generous and the beef fry is properly dry-roasted, not swimming in oil.","Service slow on weekends but the kappa and beef combination is worth the wait."]},
-  {"id":"fx:02","source":"fixture","name":"Fixture Syrian Kitchen","area":"Thousand Lights","lat":13.0571,"lng":80.2520,"rating":4.2,"rating_count":640,"price_level":"PRICE_LEVEL_MODERATE","types":["restaurant"],"primary_type":"restaurant","summary":"","reviews":["Syrian Christian food done right - the beef olathiyathu and appam is a classic.","Decent duck roast, beef was a bit chewy the day I went.","Nice quiet place for lunch."]},
-  {"id":"fx:03","source":"fixture","name":"Fixture Grill House","area":"Nungambakkam","lat":13.0620,"lng":80.2440,"rating":4.5,"rating_count":2210,"price_level":"PRICE_LEVEL_EXPENSIVE","types":["restaurant","steak_house"],"primary_type":"steak_house","summary":"Steaks and grills","reviews":["Tenderloin steak cooked exactly to medium rare. Pricey but excellent.","Best steak in the city, though you pay for it.","The ribeye is enormous."]},
-  {"id":"fx:04","source":"fixture","name":"Fixture Thattukada Corner","area":"Triplicane","lat":13.0560,"lng":80.2735,"rating":4.1,"rating_count":430,"price_level":"PRICE_LEVEL_INEXPENSIVE","types":["restaurant","fast_food"],"primary_type":"restaurant","summary":"","reviews":["Late night beef roast and porotta, exactly like a Kerala thattukada.","Cheap, fast, tasty. Beef curry is spicy.","Seating is basic but the food is honest."]},
-  {"id":"fx:05","source":"fixture","name":"Fixture Anglo Home Kitchen","area":"Royapettah","lat":13.0430,"lng":80.2640,"rating":4.3,"rating_count":210,"price_level":"PRICE_LEVEL_MODERATE","types":["restaurant"],"primary_type":"restaurant","summary":"Anglo-Indian home cooking","reviews":["Beef cutlets and ball curry just like my grandmother made.","Small takeaway operation, call ahead. The pepper beef is lovely.","Limited menu, changes daily."]},
-  {"id":"fx:06","source":"fixture","name":"Fixture Biryani Darbar","area":"Triplicane","lat":13.0585,"lng":80.2760,"rating":4.0,"rating_count":3400,"price_level":"PRICE_LEVEL_INEXPENSIVE","types":["restaurant","indian_restaurant"],"primary_type":"indian_restaurant","summary":"","reviews":["Mutton biryani is the pick here. Beef biryani also available on Fridays.","Crowded at lunch, turnover is fast.","Rice could be better seasoned."]},
-  {"id":"fx:07","source":"fixture","name":"Fixture Sagar Veg Bhavan","area":"Nungambakkam","lat":13.0590,"lng":80.2470,"rating":4.3,"rating_count":5100,"price_level":"PRICE_LEVEL_INEXPENSIVE","types":["restaurant","vegetarian_restaurant"],"primary_type":"vegetarian_restaurant","summary":"Pure vegetarian South Indian","reviews":["Best ghee roast dosa in the area.","Filter coffee is excellent, idlis are soft.","Pure veg, no onion garlic options available."]},
-  {"id":"fx:08","source":"fixture","name":"Fixture Udupi Tiffin Room","area":"Teynampet","lat":13.0400,"lng":80.2500,"rating":4.2,"rating_count":2800,"price_level":"PRICE_LEVEL_INEXPENSIVE","types":["restaurant","vegetarian_restaurant"],"primary_type":"vegetarian_restaurant","summary":"","reviews":["Standard Udupi fare, reliable sambar.","Quick breakfast spot.","Vada is crisp."]},
-  {"id":"fx:09","source":"fixture","name":"Fixture Sushi Bar","area":"Nungambakkam","lat":13.0640,"lng":80.2420,"rating":4.6,"rating_count":890,"price_level":"PRICE_LEVEL_VERY_EXPENSIVE","types":["restaurant","japanese_restaurant"],"primary_type":"japanese_restaurant","summary":"Japanese","reviews":["Fresh fish flown in, the omakase is a treat.","Expensive but genuinely good sushi.","The wagyu gyoza is excellent."]},
-  {"id":"fx:10","source":"fixture","name":"Fixture Chettinad Mess","area":"Teynampet","lat":13.0425,"lng":80.2485,"rating":4.1,"rating_count":1600,"price_level":"PRICE_LEVEL_INEXPENSIVE","types":["restaurant","indian_restaurant"],"primary_type":"indian_restaurant","summary":"","reviews":["Chicken chettinad and nattu kozhi soup are the things to get.","Mutton chukka is dry and peppery, very good.","No beef here, but everything else is solid."]},
-  {"id":"fx:11","source":"fixture","name":"Fixture Pizza Point","area":"Royapettah","lat":13.0445,"lng":80.2620,"rating":3.8,"rating_count":1200,"price_level":"PRICE_LEVEL_MODERATE","types":["restaurant","pizza_restaurant"],"primary_type":"pizza_restaurant","summary":"","reviews":["Thin crust is decent, delivery is quick.","Pepperoni is actually chicken pepperoni, be warned.","Fine for a quick bite."]},
-  {"id":"fx:12","source":"fixture","name":"Fixture Barbecue Yard","area":"Thousand Lights","lat":13.0555,"lng":80.2545,"rating":4.2,"rating_count":1950,"price_level":"PRICE_LEVEL_EXPENSIVE","types":["restaurant","barbecue_restaurant"],"primary_type":"barbecue_restaurant","summary":"Grill buffet","reviews":["Unlimited starters, good value. Mostly chicken and prawn on the grill.","No beef on the buffet.","Dessert counter is weak."]},
-  {"id":"fx:13","source":"fixture","name":"Fixture Kappa House","area":"Thousand Lights","lat":13.0580,"lng":80.2535,"rating":4.4,"rating_count":980,"price_level":"PRICE_LEVEL_MODERATE","types":["restaurant","indian_restaurant"],"primary_type":"indian_restaurant","summary":"Kerala toddy shop food","reviews":["Kappa and beef varattiyathu, exactly what I wanted.","Toddy shop style, strong flavours. Beef is the star.","Crowded and loud, but the food delivers."]},
-  {"id":"fx:14","source":"fixture","name":"Fixture Idli Factory","area":"Triplicane","lat":13.0550,"lng":80.2720,"rating":4.0,"rating_count":760,"price_level":"PRICE_LEVEL_INEXPENSIVE","types":["restaurant","vegetarian_restaurant"],"primary_type":"vegetarian_restaurant","summary":"","reviews":["Fourteen kinds of idli. The podi idli is the best one.","Cheap and quick.","Open early."]},
-  {"id":"fx:15","source":"fixture","name":"Fixture Arabian Grill","area":"Triplicane","lat":13.0575,"lng":80.2750,"rating":4.1,"rating_count":1420,"price_level":"PRICE_LEVEL_MODERATE","types":["restaurant","middle_eastern_restaurant"],"primary_type":"middle_eastern_restaurant","summary":"","reviews":["Al faham chicken and kuboos, good late night option.","Mandi is generous. Mutton and chicken only.","Shawarma is reliable."]},
-  {"id":"fx:16","source":"fixture","name":"Fixture Cafe Roastery","area":"Nungambakkam","lat":13.0615,"lng":80.2455,"rating":4.5,"rating_count":1100,"price_level":"PRICE_LEVEL_EXPENSIVE","types":["cafe","restaurant"],"primary_type":"cafe","summary":"Specialty coffee","reviews":["Good single origin pourovers.","The beef brisket sandwich at lunch is surprisingly good.","Nice place to work from."]},
-  {"id":"fx:17","source":"fixture","name":"Fixture Military Hotel","area":"Teynampet","lat":13.0410,"lng":80.2520,"rating":4.0,"rating_count":2100,"price_level":"PRICE_LEVEL_INEXPENSIVE","types":["restaurant","indian_restaurant"],"primary_type":"indian_restaurant","summary":"","reviews":["Proper military hotel. Mutton kola urundai and nattu kozhi.","Rustic, no frills, excellent gravy.","Goes off the menu by 9pm."]},
-  {"id":"fx:18","source":"fixture","name":"Fixture Noodle Wok","area":"Royapettah","lat":13.0435,"lng":80.2600,"rating":3.9,"rating_count":890,"price_level":"PRICE_LEVEL_MODERATE","types":["restaurant","chinese_restaurant"],"primary_type":"chinese_restaurant","summary":"","reviews":["Indo-Chinese, gobi manchurian is the usual order.","Beef chilli is on the menu and it is good.","Portions are big."]},
-  {"id":"fx:19","source":"fixture","name":"Fixture Sweet Stall","area":"Nungambakkam","lat":13.0600,"lng":80.2480,"rating":4.2,"rating_count":1500,"price_level":"PRICE_LEVEL_INEXPENSIVE","types":["bakery","restaurant"],"primary_type":"bakery","summary":"","reviews":["Mysore pak and jangiri.","Good for gifting boxes.","Snacks counter is busy in the evening."]},
-  {"id":"fx:20","source":"fixture","name":"Fixture Continental Club","area":"Thousand Lights","lat":13.0565,"lng":80.2510,"rating":4.3,"rating_count":520,"price_level":"PRICE_LEVEL_VERY_EXPENSIVE","types":["restaurant"],"primary_type":"restaurant","summary":"Continental fine dining","reviews":["The roast beef with horseradish is a proper old-school plate.","Expensive, formal, excellent service.","Wine list is the best in the city."]}
+  {
+    "id": "fx:01",
+    "source": "fixture",
+    "name": "Fixture Malabar Mess",
+    "area": "Nungambakkam",
+    "lat": 13.0604,
+    "lng": 80.2496,
+    "rating": 4.4,
+    "rating_count": 1820,
+    "price_level": "PRICE_LEVEL_MODERATE",
+    "types": [
+      "restaurant",
+      "indian_restaurant"
+    ],
+    "primary_type": "indian_restaurant",
+    "summary": "Kerala cooking, parotta and appam",
+    "reviews": [
+      "The beef ularthiyathu with malabar parotta is the reason I keep coming back.",
+      "Portions are generous and the beef fry is properly dry-roasted, not swimming in oil.",
+      "Service slow on weekends but the kappa and beef combination is worth the wait."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 0,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 1,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 1,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 2,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 3,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 4,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 5,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 6,
+            "hour": 23,
+            "minute": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:02",
+    "source": "fixture",
+    "name": "Fixture Syrian Kitchen",
+    "area": "Thousand Lights",
+    "lat": 13.0571,
+    "lng": 80.252,
+    "rating": 4.2,
+    "rating_count": 640,
+    "price_level": "PRICE_LEVEL_MODERATE",
+    "types": [
+      "restaurant"
+    ],
+    "primary_type": "restaurant",
+    "summary": "",
+    "reviews": [
+      "Syrian Christian food done right - the beef olathiyathu and appam is a classic.",
+      "Decent duck roast, beef was a bit chewy the day I went.",
+      "Nice quiet place for lunch."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 12,
+            "minute": 0
+          },
+          "close": {
+            "day": 0,
+            "hour": 15,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 1,
+            "hour": 12,
+            "minute": 0
+          },
+          "close": {
+            "day": 1,
+            "hour": 15,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 12,
+            "minute": 0
+          },
+          "close": {
+            "day": 2,
+            "hour": 15,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 12,
+            "minute": 0
+          },
+          "close": {
+            "day": 3,
+            "hour": 15,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 12,
+            "minute": 0
+          },
+          "close": {
+            "day": 4,
+            "hour": 15,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 12,
+            "minute": 0
+          },
+          "close": {
+            "day": 5,
+            "hour": 15,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 12,
+            "minute": 0
+          },
+          "close": {
+            "day": 6,
+            "hour": 15,
+            "minute": 30
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:03",
+    "source": "fixture",
+    "name": "Fixture Grill House",
+    "area": "Nungambakkam",
+    "lat": 13.062,
+    "lng": 80.244,
+    "rating": 4.5,
+    "rating_count": 2210,
+    "price_level": "PRICE_LEVEL_EXPENSIVE",
+    "types": [
+      "restaurant",
+      "steak_house"
+    ],
+    "primary_type": "steak_house",
+    "summary": "Steaks and grills",
+    "reviews": [
+      "Tenderloin steak cooked exactly to medium rare. Pricey but excellent.",
+      "Best steak in the city, though you pay for it.",
+      "The ribeye is enormous."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 18,
+            "minute": 30
+          },
+          "close": {
+            "day": 1,
+            "hour": 1,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 1,
+            "hour": 18,
+            "minute": 30
+          },
+          "close": {
+            "day": 2,
+            "hour": 1,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 18,
+            "minute": 30
+          },
+          "close": {
+            "day": 3,
+            "hour": 1,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 18,
+            "minute": 30
+          },
+          "close": {
+            "day": 4,
+            "hour": 1,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 18,
+            "minute": 30
+          },
+          "close": {
+            "day": 5,
+            "hour": 1,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 18,
+            "minute": 30
+          },
+          "close": {
+            "day": 6,
+            "hour": 1,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 18,
+            "minute": 30
+          },
+          "close": {
+            "day": 0,
+            "hour": 1,
+            "minute": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:04",
+    "source": "fixture",
+    "name": "Fixture Thattukada Corner",
+    "area": "Triplicane",
+    "lat": 13.056,
+    "lng": 80.2735,
+    "rating": 4.1,
+    "rating_count": 430,
+    "price_level": "PRICE_LEVEL_INEXPENSIVE",
+    "types": [
+      "restaurant",
+      "fast_food"
+    ],
+    "primary_type": "restaurant",
+    "summary": "",
+    "reviews": [
+      "Late night beef roast and porotta, exactly like a Kerala thattukada.",
+      "Cheap, fast, tasty. Beef curry is spicy.",
+      "Seating is basic but the food is honest."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 18,
+            "minute": 0
+          },
+          "close": {
+            "day": 1,
+            "hour": 2,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 1,
+            "hour": 18,
+            "minute": 0
+          },
+          "close": {
+            "day": 2,
+            "hour": 2,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 18,
+            "minute": 0
+          },
+          "close": {
+            "day": 3,
+            "hour": 2,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 18,
+            "minute": 0
+          },
+          "close": {
+            "day": 4,
+            "hour": 2,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 18,
+            "minute": 0
+          },
+          "close": {
+            "day": 5,
+            "hour": 2,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 18,
+            "minute": 0
+          },
+          "close": {
+            "day": 6,
+            "hour": 2,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 18,
+            "minute": 0
+          },
+          "close": {
+            "day": 0,
+            "hour": 2,
+            "minute": 30
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:05",
+    "source": "fixture",
+    "name": "Fixture Anglo Home Kitchen",
+    "area": "Royapettah",
+    "lat": 13.043,
+    "lng": 80.264,
+    "rating": 4.3,
+    "rating_count": 210,
+    "price_level": "PRICE_LEVEL_MODERATE",
+    "types": [
+      "restaurant"
+    ],
+    "primary_type": "restaurant",
+    "summary": "Anglo-Indian home cooking",
+    "reviews": [
+      "Beef cutlets and ball curry just like my grandmother made.",
+      "Small takeaway operation, call ahead. The pepper beef is lovely.",
+      "Limited menu, changes daily."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 0,
+            "hour": 20,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 2,
+            "hour": 20,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 3,
+            "hour": 20,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 4,
+            "hour": 20,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 5,
+            "hour": 20,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 6,
+            "hour": 20,
+            "minute": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:06",
+    "source": "fixture",
+    "name": "Fixture Biryani Darbar",
+    "area": "Triplicane",
+    "lat": 13.0585,
+    "lng": 80.276,
+    "rating": 4.0,
+    "rating_count": 3400,
+    "price_level": "PRICE_LEVEL_INEXPENSIVE",
+    "types": [
+      "restaurant",
+      "indian_restaurant"
+    ],
+    "primary_type": "indian_restaurant",
+    "summary": "",
+    "reviews": [
+      "Mutton biryani is the pick here. Beef biryani also available on Fridays.",
+      "Crowded at lunch, turnover is fast.",
+      "Rice could be better seasoned."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 0,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 1,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 1,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 2,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 3,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 4,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 5,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 6,
+            "hour": 23,
+            "minute": 30
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:07",
+    "source": "fixture",
+    "name": "Fixture Sagar Veg Bhavan",
+    "area": "Nungambakkam",
+    "lat": 13.059,
+    "lng": 80.247,
+    "rating": 4.3,
+    "rating_count": 5100,
+    "price_level": "PRICE_LEVEL_INEXPENSIVE",
+    "types": [
+      "restaurant",
+      "vegetarian_restaurant"
+    ],
+    "primary_type": "vegetarian_restaurant",
+    "summary": "Pure vegetarian South Indian",
+    "reviews": [
+      "Best ghee roast dosa in the area.",
+      "Filter coffee is excellent, idlis are soft.",
+      "Pure veg, no onion garlic options available."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 6,
+            "minute": 30
+          },
+          "close": {
+            "day": 0,
+            "hour": 22,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 1,
+            "hour": 6,
+            "minute": 30
+          },
+          "close": {
+            "day": 1,
+            "hour": 22,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 6,
+            "minute": 30
+          },
+          "close": {
+            "day": 2,
+            "hour": 22,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 6,
+            "minute": 30
+          },
+          "close": {
+            "day": 3,
+            "hour": 22,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 6,
+            "minute": 30
+          },
+          "close": {
+            "day": 4,
+            "hour": 22,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 6,
+            "minute": 30
+          },
+          "close": {
+            "day": 5,
+            "hour": 22,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 6,
+            "minute": 30
+          },
+          "close": {
+            "day": 6,
+            "hour": 22,
+            "minute": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:08",
+    "source": "fixture",
+    "name": "Fixture Udupi Tiffin Room",
+    "area": "Teynampet",
+    "lat": 13.04,
+    "lng": 80.25,
+    "rating": 4.2,
+    "rating_count": 2800,
+    "price_level": "PRICE_LEVEL_INEXPENSIVE",
+    "types": [
+      "restaurant",
+      "vegetarian_restaurant"
+    ],
+    "primary_type": "vegetarian_restaurant",
+    "summary": "",
+    "reviews": [
+      "Standard Udupi fare, reliable sambar.",
+      "Quick breakfast spot.",
+      "Vada is crisp."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 6,
+            "minute": 0
+          },
+          "close": {
+            "day": 0,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 1,
+            "hour": 6,
+            "minute": 0
+          },
+          "close": {
+            "day": 1,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 6,
+            "minute": 0
+          },
+          "close": {
+            "day": 2,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 6,
+            "minute": 0
+          },
+          "close": {
+            "day": 3,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 6,
+            "minute": 0
+          },
+          "close": {
+            "day": 4,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 6,
+            "minute": 0
+          },
+          "close": {
+            "day": 5,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 6,
+            "minute": 0
+          },
+          "close": {
+            "day": 6,
+            "hour": 21,
+            "minute": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:09",
+    "source": "fixture",
+    "name": "Fixture Sushi Bar",
+    "area": "Nungambakkam",
+    "lat": 13.064,
+    "lng": 80.242,
+    "rating": 4.6,
+    "rating_count": 890,
+    "price_level": "PRICE_LEVEL_VERY_EXPENSIVE",
+    "types": [
+      "restaurant",
+      "japanese_restaurant"
+    ],
+    "primary_type": "japanese_restaurant",
+    "summary": "Japanese",
+    "reviews": [
+      "Fresh fish flown in, the omakase is a treat.",
+      "Expensive but genuinely good sushi.",
+      "The wagyu gyoza is excellent."
+    ]
+  },
+  {
+    "id": "fx:10",
+    "source": "fixture",
+    "name": "Fixture Chettinad Mess",
+    "area": "Teynampet",
+    "lat": 13.0425,
+    "lng": 80.2485,
+    "rating": 4.1,
+    "rating_count": 1600,
+    "price_level": "PRICE_LEVEL_INEXPENSIVE",
+    "types": [
+      "restaurant",
+      "indian_restaurant"
+    ],
+    "primary_type": "indian_restaurant",
+    "summary": "",
+    "reviews": [
+      "Chicken chettinad and nattu kozhi soup are the things to get.",
+      "Mutton chukka is dry and peppery, very good.",
+      "No beef here, but everything else is solid."
+    ]
+  },
+  {
+    "id": "fx:11",
+    "source": "fixture",
+    "name": "Fixture Pizza Point",
+    "area": "Royapettah",
+    "lat": 13.0445,
+    "lng": 80.262,
+    "rating": 3.8,
+    "rating_count": 1200,
+    "price_level": "PRICE_LEVEL_MODERATE",
+    "types": [
+      "restaurant",
+      "pizza_restaurant"
+    ],
+    "primary_type": "pizza_restaurant",
+    "summary": "",
+    "reviews": [
+      "Thin crust is decent, delivery is quick.",
+      "Pepperoni is actually chicken pepperoni, be warned.",
+      "Fine for a quick bite."
+    ]
+  },
+  {
+    "id": "fx:12",
+    "source": "fixture",
+    "name": "Fixture Barbecue Yard",
+    "area": "Thousand Lights",
+    "lat": 13.0555,
+    "lng": 80.2545,
+    "rating": 4.2,
+    "rating_count": 1950,
+    "price_level": "PRICE_LEVEL_EXPENSIVE",
+    "types": [
+      "restaurant",
+      "barbecue_restaurant"
+    ],
+    "primary_type": "barbecue_restaurant",
+    "summary": "Grill buffet",
+    "reviews": [
+      "Unlimited starters, good value. Mostly chicken and prawn on the grill.",
+      "No beef on the buffet.",
+      "Dessert counter is weak."
+    ]
+  },
+  {
+    "id": "fx:13",
+    "source": "fixture",
+    "name": "Fixture Kappa House",
+    "area": "Thousand Lights",
+    "lat": 13.058,
+    "lng": 80.2535,
+    "rating": 4.4,
+    "rating_count": 980,
+    "price_level": "PRICE_LEVEL_MODERATE",
+    "types": [
+      "restaurant",
+      "indian_restaurant"
+    ],
+    "primary_type": "indian_restaurant",
+    "summary": "Kerala toddy shop food",
+    "reviews": [
+      "Kappa and beef varattiyathu, exactly what I wanted.",
+      "Toddy shop style, strong flavours. Beef is the star.",
+      "Crowded and loud, but the food delivers."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 11,
+            "minute": 30
+          },
+          "close": {
+            "day": 0,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 1,
+            "hour": 11,
+            "minute": 30
+          },
+          "close": {
+            "day": 1,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 11,
+            "minute": 30
+          },
+          "close": {
+            "day": 2,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 11,
+            "minute": 30
+          },
+          "close": {
+            "day": 3,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 11,
+            "minute": 30
+          },
+          "close": {
+            "day": 4,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 11,
+            "minute": 30
+          },
+          "close": {
+            "day": 5,
+            "hour": 23,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 11,
+            "minute": 30
+          },
+          "close": {
+            "day": 6,
+            "hour": 23,
+            "minute": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:14",
+    "source": "fixture",
+    "name": "Fixture Idli Factory",
+    "area": "Triplicane",
+    "lat": 13.055,
+    "lng": 80.272,
+    "rating": 4.0,
+    "rating_count": 760,
+    "price_level": "PRICE_LEVEL_INEXPENSIVE",
+    "types": [
+      "restaurant",
+      "vegetarian_restaurant"
+    ],
+    "primary_type": "vegetarian_restaurant",
+    "summary": "",
+    "reviews": [
+      "Fourteen kinds of idli. The podi idli is the best one.",
+      "Cheap and quick.",
+      "Open early."
+    ]
+  },
+  {
+    "id": "fx:15",
+    "source": "fixture",
+    "name": "Fixture Arabian Grill",
+    "area": "Triplicane",
+    "lat": 13.0575,
+    "lng": 80.275,
+    "rating": 4.1,
+    "rating_count": 1420,
+    "price_level": "PRICE_LEVEL_MODERATE",
+    "types": [
+      "restaurant",
+      "middle_eastern_restaurant"
+    ],
+    "primary_type": "middle_eastern_restaurant",
+    "summary": "",
+    "reviews": [
+      "Al faham chicken and kuboos, good late night option.",
+      "Mandi is generous. Mutton and chicken only.",
+      "Shawarma is reliable."
+    ]
+  },
+  {
+    "id": "fx:16",
+    "source": "fixture",
+    "name": "Fixture Cafe Roastery",
+    "area": "Nungambakkam",
+    "lat": 13.0615,
+    "lng": 80.2455,
+    "rating": 4.5,
+    "rating_count": 1100,
+    "price_level": "PRICE_LEVEL_EXPENSIVE",
+    "types": [
+      "cafe",
+      "restaurant"
+    ],
+    "primary_type": "cafe",
+    "summary": "Specialty coffee",
+    "reviews": [
+      "Good single origin pourovers.",
+      "The beef brisket sandwich at lunch is surprisingly good.",
+      "Nice place to work from."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 0,
+            "minute": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:17",
+    "source": "fixture",
+    "name": "Fixture Military Hotel",
+    "area": "Teynampet",
+    "lat": 13.041,
+    "lng": 80.252,
+    "rating": 4.0,
+    "rating_count": 2100,
+    "price_level": "PRICE_LEVEL_INEXPENSIVE",
+    "types": [
+      "restaurant",
+      "indian_restaurant"
+    ],
+    "primary_type": "indian_restaurant",
+    "summary": "",
+    "reviews": [
+      "Proper military hotel. Mutton kola urundai and nattu kozhi.",
+      "Rustic, no frills, excellent gravy.",
+      "Goes off the menu by 9pm."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 0,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 1,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 1,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 2,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 3,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 4,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 5,
+            "hour": 21,
+            "minute": 0
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 11,
+            "minute": 0
+          },
+          "close": {
+            "day": 6,
+            "hour": 21,
+            "minute": 0
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fx:18",
+    "source": "fixture",
+    "name": "Fixture Noodle Wok",
+    "area": "Royapettah",
+    "lat": 13.0435,
+    "lng": 80.26,
+    "rating": 3.9,
+    "rating_count": 890,
+    "price_level": "PRICE_LEVEL_MODERATE",
+    "types": [
+      "restaurant",
+      "chinese_restaurant"
+    ],
+    "primary_type": "chinese_restaurant",
+    "summary": "",
+    "reviews": [
+      "Indo-Chinese, gobi manchurian is the usual order.",
+      "Beef chilli is on the menu and it is good.",
+      "Portions are big."
+    ]
+  },
+  {
+    "id": "fx:19",
+    "source": "fixture",
+    "name": "Fixture Sweet Stall",
+    "area": "Nungambakkam",
+    "lat": 13.06,
+    "lng": 80.248,
+    "rating": 4.2,
+    "rating_count": 1500,
+    "price_level": "PRICE_LEVEL_INEXPENSIVE",
+    "types": [
+      "bakery",
+      "restaurant"
+    ],
+    "primary_type": "bakery",
+    "summary": "",
+    "reviews": [
+      "Mysore pak and jangiri.",
+      "Good for gifting boxes.",
+      "Snacks counter is busy in the evening."
+    ]
+  },
+  {
+    "id": "fx:20",
+    "source": "fixture",
+    "name": "Fixture Continental Club",
+    "area": "Thousand Lights",
+    "lat": 13.0565,
+    "lng": 80.251,
+    "rating": 4.3,
+    "rating_count": 520,
+    "price_level": "PRICE_LEVEL_VERY_EXPENSIVE",
+    "types": [
+      "restaurant"
+    ],
+    "primary_type": "restaurant",
+    "summary": "Continental fine dining",
+    "reviews": [
+      "The roast beef with horseradish is a proper old-school plate.",
+      "Expensive, formal, excellent service.",
+      "Wine list is the best in the city."
+    ],
+    "regularOpeningHours": {
+      "periods": [
+        {
+          "open": {
+            "day": 0,
+            "hour": 19,
+            "minute": 0
+          },
+          "close": {
+            "day": 0,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 1,
+            "hour": 19,
+            "minute": 0
+          },
+          "close": {
+            "day": 1,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 2,
+            "hour": 19,
+            "minute": 0
+          },
+          "close": {
+            "day": 2,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 3,
+            "hour": 19,
+            "minute": 0
+          },
+          "close": {
+            "day": 3,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 4,
+            "hour": 19,
+            "minute": 0
+          },
+          "close": {
+            "day": 4,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 5,
+            "hour": 19,
+            "minute": 0
+          },
+          "close": {
+            "day": 5,
+            "hour": 23,
+            "minute": 30
+          }
+        },
+        {
+          "open": {
+            "day": 6,
+            "hour": 19,
+            "minute": 0
+          },
+          "close": {
+            "day": 6,
+            "hour": 23,
+            "minute": 30
+          }
+        }
+      ]
+    }
+  }
 ]

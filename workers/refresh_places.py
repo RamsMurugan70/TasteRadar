@@ -32,6 +32,8 @@ import sys
 import time
 from datetime import datetime, timedelta, timezone
 
+import hours as hours_lib
+
 CACHE_WINDOW_DAYS = 30
 
 # Three circles over the part of Chennai with the most Kerala, Muslim and
@@ -53,6 +55,7 @@ GOOGLE_FIELDS = ",".join(
         "places.types",
         "places.primaryType",
         "places.editorialSummary",
+        "places.regularOpeningHours",
         "places.reviews",
     ]
 )
@@ -113,6 +116,7 @@ def fetch_google(tiles, radius_m):
                 "types": p.get("types", []),
                 "primary_type": p.get("primaryType"),
                 "summary": (p.get("editorialSummary") or {}).get("text", ""),
+                "hours": hours_lib.normalise_google(p.get("regularOpeningHours")),
                 "reviews": reviews[:10],
             }
         time.sleep(0.3)
@@ -154,6 +158,7 @@ def fetch_osm(tiles, radius_m):
                 "types": [v for k, v in tags.items() if k in ("amenity", "cuisine")],
                 "primary_type": tags.get("amenity"),
                 "summary": tags.get("description", ""),
+                "hours": hours_lib.normalise_osm(tags.get("opening_hours")),
                 "reviews": [],
             }
         )
@@ -164,20 +169,20 @@ def upsert(con, rows) -> tuple[int, int]:
     before = con.execute("SELECT COUNT(*) FROM places").fetchone()[0]
     con.executemany(
         """INSERT INTO places (id, source, name, lat, lng, types, primary_type,
-                               price_level, rating, rating_count, summary, fetched_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               price_level, rating, rating_count, summary, hours, fetched_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(id) DO UPDATE SET
              name = excluded.name, lat = excluded.lat, lng = excluded.lng,
              types = excluded.types, primary_type = excluded.primary_type,
              price_level = excluded.price_level, rating = excluded.rating,
              rating_count = excluded.rating_count, summary = excluded.summary,
-             fetched_at = excluded.fetched_at""",
+             hours = excluded.hours, fetched_at = excluded.fetched_at""",
         [
             (
                 r["id"], r["source"], r["name"], r["lat"], r["lng"],
                 json.dumps(r.get("types", [])), r.get("primary_type"),
                 r.get("price_level"), r.get("rating"), r.get("rating_count"),
-                r.get("summary", ""), now_iso(),
+                r.get("summary", ""), hours_lib.dumps(r.get("hours")), now_iso(),
             )
             for r in rows
             if r.get("lat") is not None and r.get("lng") is not None
@@ -198,6 +203,30 @@ def prune(con) -> int:
     return stale
 
 
+def report_open(con) -> None:
+    """Sanity-check the stored hours against the clock, by eye."""
+    now = datetime.now()
+    rows = con.execute("SELECT name, hours FROM places ORDER BY name").fetchall()
+    unknown = 0
+    print(f"as of {now:%a %H:%M}\n")
+    for name, raw in rows:
+        h = json.loads(raw) if raw else None
+        open_now = hours_lib.is_open_at(h, now)
+        if open_now is None:
+            unknown += 1
+            continue
+        left = hours_lib.minutes_until_close(h, now)
+        if not open_now:
+            state = "closed"
+        elif left is not None and left > 1440:
+            state = "open (no closing time this week)"
+        else:
+            state = f"open, {left} min left"
+        print(f"  {name[:34]:34s} {state}")
+    print(f"\n{len(rows) - unknown} with known hours, {unknown} unknown "
+          f"(unknown never suppresses an alert)")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default="../server/taste-radar.db")
@@ -205,6 +234,8 @@ def main() -> None:
     ap.add_argument("--radius", type=int, default=1200)
     ap.add_argument("--reviews-out", default="reviews.json")
     ap.add_argument("--prune-only", action="store_true")
+    ap.add_argument("--report-open", action="store_true",
+                    help="print which stored places are open right now, and stop")
     ap.add_argument("--fixture", default="../spike1-scoring/fixture_candidates.json")
     args = ap.parse_args()
 
@@ -215,6 +246,11 @@ def main() -> None:
         con.close()
         return
 
+    if args.report_open:
+        report_open(con)
+        con.close()
+        return
+
     print(f"fetching from {args.source} ...")
     if args.source == "google":
         rows = fetch_google(CHENNAI_TILES, args.radius)
@@ -222,6 +258,11 @@ def main() -> None:
         rows = fetch_osm(CHENNAI_TILES, args.radius)
     else:
         rows = json.loads(open(args.fixture, encoding="utf-8").read())
+        # The fixture carries hours in Google's shape so the real normaliser is
+        # what processes them, rather than a second code path for test data.
+        for r in rows:
+            if "regularOpeningHours" in r:
+                r["hours"] = hours_lib.normalise_google(r["regularOpeningHours"])
 
     added, seen = upsert(con, rows)
     pruned = prune(con)

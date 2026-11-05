@@ -66,10 +66,13 @@ be standing in Nungambakkam, so expect zero fences unless you are — point
 
 ## Known gaps
 
-- **The open-now gate is not implemented.** The `places` table has an `hours`
-  column, but `refresh_places.py` never fills it and `/fence-set` never sends it.
-  So the app can alert you about a place that shut an hour ago. This is the most
-  worthwhile next fix.
+- **Hours are only as good as the source.** The open-now gate works, but places
+  with no published hours are treated as *unknown*, which never suppresses an
+  alert — guessing would silence real matches. `refresh_places.py --report-open`
+  prints what is known, so you can see the coverage for your own area.
+- **Hours are local wall clock.** For a Chennai-only app that is unambiguous.
+  Travel across a timezone and the gate reads the wrong hours; fixing it means
+  storing an IANA zone per place and comparing in that zone.
 - **Feedback is not queued.** If a *Going* tap happens with no signal it is
   logged and dropped. A retry queue is worth building once the app is in daily
   use and the loss is measurable, not before.

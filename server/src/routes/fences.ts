@@ -3,6 +3,21 @@ import type { Db } from '../db.js';
 import { candidateFences, recordFenceSet } from '../db.js';
 import { config } from '../config.js';
 
+/**
+ * A row the worker wrote badly must not blind the phone to every other fence, so
+ * unparseable hours degrade to unknown rather than failing the request. Unknown
+ * never suppresses an alert, so the cost of this is an alert about a place that
+ * may be shut - far cheaper than no alerts at all.
+ */
+function parseHours(raw: string | null): unknown {
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
 interface FenceSetBody {
   lat: number;
   lng: number;
@@ -45,6 +60,10 @@ export function fenceRoutes(app: FastifyInstance, db: Db): void {
           reason: f.reason,
           distanceM: f.distanceM,
           seenBefore: f.lastAlertedAt !== null,
+          // Sent raw, and evaluated on the phone at alert time rather than here.
+          // A fence set is drawn once and then used for hours, so "open now"
+          // computed at this moment would be stale by the time it mattered.
+          hours: parseHours(f.hours),
         })),
       };
     },

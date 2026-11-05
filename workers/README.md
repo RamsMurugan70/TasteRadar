@@ -6,8 +6,9 @@ table.
 
 | Script | Job |
 | --- | --- |
-| `refresh_places.py` | Pull restaurants into `places`, and delete rows past the 30-day caching window |
+| `refresh_places.py` | Pull restaurants into `places`, normalise their opening hours, and delete rows past the 30-day caching window |
 | `score_places.py` | Score every unscored place against every active want |
+| `hours.py` | Opening-hours normalisation and evaluation. Imported by the above; 16 tests in `test_hours.py` |
 
 ## A normal night
 
@@ -41,3 +42,44 @@ rows and both of their scores.
 **`--dry-run` is a baseline, not a stub.** It counts keywords. It cannot read
 negation, so a review saying *"no beef on the buffet"* scores as a match. If the
 model cannot beat it on your own graded sample, you do not need the model.
+
+## Opening hours
+
+Normalised once here, evaluated on the phone at alert time — not at fence-set
+time, because a set is drawn once and then used for hours, so "open now"
+computed when the set is drawn is stale by the time it matters.
+
+The format is a list of periods in **minutes since Sunday 00:00 local time**,
+where `c` is always greater than `o`:
+
+```json
+{"periods": [{"o": 6420, "c": 7140}]}
+```
+
+A period running past midnight simply has a `c` beyond its day, and one running
+past Saturday midnight has a `c` beyond 10080. That removes wrap-around as a
+special case: a check only tests `t` and `t + 10080`. Open all week is one
+period of 0 to 10080.
+
+**Unknown is not closed.** Google and OSM both leave plenty of small places
+without hours, and treating that as shut would silence real matches. Unknown
+never suppresses an alert, so the cost is an occasional alert about somewhere
+that turns out to be closed.
+
+OSM's `opening_hours` grammar has holidays, months, week numbers and sunset
+offsets. Only the common forms are parsed — `24/7`, and rules like
+`Mo-Fr 09:00-18:00; Sa 10:00-14:00`. Anything else returns unknown rather than a
+guess.
+
+See what your own area actually publishes:
+
+```bash
+python3 refresh_places.py --db ../server/taste-radar.db --report-open
+```
+
+```bash
+python3 -m unittest test_hours -v
+```
+
+`hours.py` is mirrored line for line by `android/.../Hours.kt`, which cannot be
+tested here. The Python side carries the tests; change one and change both.

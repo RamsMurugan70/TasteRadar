@@ -29,7 +29,7 @@ class FeedbackReceiver : BroadcastReceiver() {
                 // time, or the report is still in flight. Create it now if so.
                 val alertId = FenceCache.alertId(context, placeId) ?: run {
                     val fence = FenceCache.fenceById(context, placeId)
-                        ?: Fence(placeId, wantId, "", 0.0, 0.0, 0, "", false)
+                        ?: Fence(placeId, wantId, "", 0.0, 0.0, 0, "", false, null)
                     Api.postAlert(context, fence, null, null)
                         .also { FenceCache.putAlertId(context, placeId, it) }
                 }

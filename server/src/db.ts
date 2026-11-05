@@ -59,6 +59,8 @@ export interface Candidate {
   rating: number | null;
   distanceM: number;
   lastAlertedAt: string | null;
+  /** Opening hours as the worker normalised them, or null when unknown. */
+  hours: string | null;
 }
 
 /**
@@ -91,6 +93,7 @@ export function candidateFences(db: Db, userId: string, centre: Point): Candidat
               p.lat,
               p.lng,
               p.rating,
+              p.hours,
               s.score,
               s.reason,
               (SELECT MAX(a.fired_at) FROM alerts a

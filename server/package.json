@@ -1,0 +1,25 @@
+{
+  "name": "taste-radar-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node --no-warnings=ExperimentalWarning dist/src/index.js",
+    "dev": "tsc --watch",
+    "migrate": "node --no-warnings=ExperimentalWarning dist/src/migrate.js",
+    "seed": "node --no-warnings=ExperimentalWarning dist/src/seed.js",
+    "test": "tsc && node --no-warnings=ExperimentalWarning --test \"dist/test/**/*.test.js\""
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "1.5.0",
+    "fastify": "5.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.1",
+    "typescript": "5.7.3"
+  }
+}

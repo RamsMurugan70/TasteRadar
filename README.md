@@ -16,10 +16,13 @@ want, and then it interrupts you.
 
 ---
 
-## Status: pre-build
+## Status
 
-None of this is the app. What is here are the two experiments that decide whether the app is
-worth building at all, and either one can say no.
+The **server and its workers run today** — seed it, score it, and `POST /fence-set` returns
+scored matches with reasons. The **Android app does not exist yet**: `spike2-geofence/` is a
+measuring instrument, not a product, and deliberately posts no notifications at all.
+
+Two experiments still gate the app itself, and either one can say no.
 
 | | Question it answers | Gate it has to clear |
 | --- | --- | --- |
@@ -53,8 +56,10 @@ geometry.
 
 | Path | What it is |
 | --- | --- |
-| `spike1-scoring/` | Python. Fetch Chennai restaurants, score them against a free-text want, grade the result blind against your own judgement. |
-| `spike2-geofence/` | A deliberately boring Android app. Drop fences at your current location, carry it for a week, read the CSV. |
+| [`server/`](server/) | TypeScript + Fastify + SQLite. Compiles wants, holds the places, answers *what should I watch around here?* |
+| [`workers/`](workers/) | Python. Nightly place refresh and batch scoring — everything that costs money, kept out of the alert path. |
+| [`spike1-scoring/`](spike1-scoring/) | Python. Fetch Chennai restaurants, score them against a free-text want, grade the result blind against your own judgement. |
+| [`spike2-geofence/`](spike2-geofence/) | A deliberately boring Android app. Drop fences at your current location, carry it for a week, read the CSV. |
 
 ---
 

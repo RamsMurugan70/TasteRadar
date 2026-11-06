@@ -76,7 +76,7 @@ class MainActivity : Activity() {
         root.addView(label("What do you want?"))
         wantField = EditText(this).apply {
             inputType = InputType.TYPE_CLASS_TEXT
-            hint = "craving a proper beef fry, under 500 a head"
+            hint = "e.g. craving a proper beef fry, under 500 a head"
         }
         root.addView(wantField)
         root.addView(button("Add want") { addWant() })
@@ -195,7 +195,15 @@ class MainActivity : Activity() {
                     }
                 },
             )
-            runOnUiThread { toast(message) }
+            runOnUiThread {
+                toast(message)
+                // The wants list on screen was fetched against the previous
+                // server and token, so whatever it says is now stale - including
+                // a connection error from a server we can suddenly reach. Fetch
+                // it again rather than leave a dead message sitting there.
+                loadWants()
+                refreshStatus()
+            }
         }
     }
 
@@ -230,6 +238,10 @@ class MainActivity : Activity() {
 
     private fun addWant() {
         val text = wantField.text.toString().trim()
+        if (text.isBlank()) {
+            toast("Type what you want - the grey line is only an example")
+            return
+        }
         if (text.length < 3) {
             toast("Say a bit more than that")
             return

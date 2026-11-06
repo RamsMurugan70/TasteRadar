@@ -8,10 +8,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node --no-warnings=ExperimentalWarning dist/src/index.js",
+    "start": "node --env-file-if-exists=.env --no-warnings=ExperimentalWarning dist/src/index.js",
     "dev": "tsc --watch",
-    "migrate": "node --no-warnings=ExperimentalWarning dist/src/migrate.js",
-    "seed": "node --no-warnings=ExperimentalWarning dist/src/seed.js",
+    "migrate": "node --env-file-if-exists=.env --no-warnings=ExperimentalWarning dist/src/migrate.js",
+    "seed": "node --env-file-if-exists=.env --no-warnings=ExperimentalWarning dist/src/seed.js",
     "test": "tsc && node --no-warnings=ExperimentalWarning --test \"dist/test/**/*.test.js\""
   },
   "dependencies": {

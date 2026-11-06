@@ -100,10 +100,13 @@ things follow from that, both deliberate:
   reporting the server as unreachable. A 429 is treated as retryable by the
   feedback queue, not permanent — otherwise a lockout would make the queue throw
   away exactly the data it exists to protect.
-- **Over plain HTTP the token is sniffable.** Cleartext is allowed for loopback
-  and private ranges so you can run this at home, and the app's first screen says
-  plainly when the token is crossing a network in the clear. The real fix is a
-  tunnel in front of the server; `res/xml/network_security_config.xml` says how.
+- **Over plain HTTP the token is sniffable.** Cleartext is allowed so you can run
+  this at home, and the app's first screen says plainly when the token is
+  crossing a network in the clear — loudly if the address is public rather than
+  private. That judgement is in `Config.exposure`, not in the network security
+  config, because a `<domain>` entry matches an exact host with no CIDR or
+  wildcard and so cannot express "private addresses only". The real fix is a
+  tunnel in front of the server.
 
 ## Known gaps
 

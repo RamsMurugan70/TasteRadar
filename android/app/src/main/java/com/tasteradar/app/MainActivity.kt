@@ -156,9 +156,12 @@ class MainActivity : Activity() {
                 Config.authToken(this@MainActivity).isBlank() ->
                     "No token set. The server refuses every request without one, " +
                         "and with no AUTH_TOKEN it only listens on loopback."
-                Config.isCleartextToNetwork(this@MainActivity) ->
-                    "Plain HTTP over the network: the token is sniffable on shared " +
-                        "wifi. Fine at home, worth a tunnel anywhere else."
+                Config.exposure(this@MainActivity) == Config.Exposure.PUBLIC_CLEARTEXT ->
+                    "Plain HTTP to a PUBLIC address. The token is readable by anyone " +
+                        "between you and it. Put the server behind HTTPS before using this."
+                Config.exposure(this@MainActivity) == Config.Exposure.PRIVATE_CLEARTEXT ->
+                    "Plain HTTP on your own network: the token is sniffable by anyone " +
+                        "on the same wifi. Fine at home, worth a tunnel anywhere else."
                 else -> ""
             }
             val queued = FeedbackQueue.size(this@MainActivity)

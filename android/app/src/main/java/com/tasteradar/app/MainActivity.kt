@@ -27,6 +27,25 @@ import kotlin.concurrent.thread
  */
 class MainActivity : Activity() {
 
+    private companion object {
+        /**
+         * Android saves and restores a text field's contents by view ID. These
+         * views are built in code and had none, so anything typed was silently
+         * dropped whenever the activity was recreated - a rotation, or Android
+         * reclaiming memory while you were in another app. The field simply went
+         * blank, with nothing on screen to say why.
+         *
+         * These must be constants, not View.generateViewId(): that returns a
+         * different value on every run, so the restored bundle would never match
+         * the new view and the bug would survive the fix. Small integers do not
+         * collide with resource IDs, which live up at 0x7f......
+         */
+        const val ID_SERVER = 1001
+        const val ID_TOKEN = 1002
+        const val ID_WANT = 1003
+        const val ID_SCROLL = 1004
+    }
+
     private lateinit var status: TextView
     private lateinit var wants: TextView
     private lateinit var serverField: EditText
@@ -50,6 +69,7 @@ class MainActivity : Activity() {
 
         root.addView(label("Server"))
         serverField = EditText(this).apply {
+            id = ID_SERVER
             inputType = InputType.TYPE_TEXT_VARIATION_URI
             setText(Config.serverUrl(this@MainActivity))
         }
@@ -57,6 +77,7 @@ class MainActivity : Activity() {
 
         root.addView(label("Token"))
         tokenField = EditText(this).apply {
+            id = ID_TOKEN
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             hint = "the server's AUTH_TOKEN"
             setText(Config.authToken(this@MainActivity))
@@ -75,6 +96,7 @@ class MainActivity : Activity() {
 
         root.addView(label("What do you want?"))
         wantField = EditText(this).apply {
+            id = ID_WANT
             inputType = InputType.TYPE_CLASS_TEXT
             hint = "e.g. craving a proper beef fry, under 500 a head"
         }
@@ -94,6 +116,7 @@ class MainActivity : Activity() {
         })
 
         setContentView(ScrollView(this).apply {
+            id = ID_SCROLL
             addView(root, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         })
 
@@ -239,11 +262,11 @@ class MainActivity : Activity() {
     private fun addWant() {
         val text = wantField.text.toString().trim()
         if (text.isBlank()) {
-            toast("Type what you want - the grey line is only an example")
+            toast("The want box is empty - type into the box under \"What do you want?\"")
             return
         }
         if (text.length < 3) {
-            toast("Say a bit more than that")
+            toast("Only read ${text.length} characters - say a bit more than that")
             return
         }
         thread {
